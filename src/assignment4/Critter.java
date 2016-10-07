@@ -5,8 +5,8 @@
  * <Peter Yu>
  * <pmy89>
  * <Student1 5-digit Unique No.>
- * <Student2 Name>
- * <Student2 EID>
+ * <Christopher Ong>
+ * <cio247>
  * <Student2 5-digit Unique No.>
  * Slip days used: <0>
  * Fall 2016
