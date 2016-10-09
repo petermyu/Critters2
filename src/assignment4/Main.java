@@ -65,7 +65,7 @@ public class Main {
         } else { // if no arguments to main
             kb = new Scanner(System.in); // use keyboard and console
         }
-
+        Critter.displayWorld();
         /* Do not alter the code above for your submission. */
         /* Write your code below. */
         
