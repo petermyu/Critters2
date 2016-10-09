@@ -23,6 +23,7 @@ import java.util.List;
 
 public abstract class Critter {
 	private static String myPackage;
+	private static List<Critter> critters = new java.util.ArrayList<Critter>();
 	private	static List<Critter> population = new java.util.ArrayList<Critter>();
 	private static List<Critter> babies = new java.util.ArrayList<Critter>();
 
@@ -74,9 +75,46 @@ public abstract class Critter {
 	 * @throws InvalidCritterException
 	 */
 	public static void makeCritter(String critter_class_name) throws InvalidCritterException {
+		try {
+			TestCritter crit = (TestCritter) Class.forName(critter_class_name).newInstance();
+			crit.setEnergy(Params.start_energy);
+			crit.setX_coord(getRandomInt(Params.world_width));
+			crit.setY_coord(getRandomInt(Params.world_height));
+			if(Class.forName(critter_class_name) != null){
+				throw new InvalidCritterException(critter_class_name);
+				
+			}
+		}
+			catch(IllegalAccessException a){
+				throw new InvalidCritterException(critter_class_name);
+			}
+			catch(InstantiationException c){
+				throw new InvalidCritterException(critter_class_name);
+			}
+			catch(ClassNotFoundException b){
+				
+			}
+	
+		}
+	
+		
+
+			/*@Override												// not sure we need this
+			public void doTimeStep() {								//
+				// TODO Auto-generated method stub					//
+				
+			}
+
+			@Override
+			public boolean fight(String oponent) {
+				// TODO Auto-generated method stub
+				return false;										//
+			}
+			
+		critters.add(crit);
 	}
 	
-	/**
+	*
 	 * Gets a list of critters of a specific type.
 	 * @param critter_class_name What kind of Critter is to be listed.  Unqualified class name.
 	 * @return List of Critters.
@@ -171,6 +209,9 @@ public abstract class Critter {
 	}
 	
 	public static void worldTimeStep() {
+		for(int i = 0; i < critters.size(); i++) {
+			critters.get(i).doTimeStep();
+		}
 	}
 	
 	public static void displayWorld() {}
