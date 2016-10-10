@@ -234,6 +234,7 @@ public abstract class Critter {
 	}
 	
 	public static void worldTimeStep() {
+		//mergetest comment
 		for(int i = 0; i < critters.size(); i++) {
 			critters.get(i).doTimeStep();
 		}
