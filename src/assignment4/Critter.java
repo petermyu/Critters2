@@ -251,6 +251,7 @@ public abstract class Critter {
 					critters.remove(l);
 				}
 			}
+
 		}
 	
 	public static void displayWorld() {
