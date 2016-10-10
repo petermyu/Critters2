@@ -234,10 +234,24 @@ public abstract class Critter {
 	}
 	
 	public static void worldTimeStep() {
-		for(int i = 0; i < critters.size(); i++) {
-			critters.get(i).doTimeStep();
+			for(int i = 0; i < critters.size(); i++) {
+				critters.get(i).doTimeStep();
+			}
+			for(int j = 0; j < critters.size()-1; j++){					// nested for loop for checking critters in same spot
+				for(int k = j+1; k < critters.size(); k++){
+					if((critters.get(j).x_coord == critters.get(k).x_coord) && (critters.get(j).y_coord == critters.get(k).y_coord)  ){
+						//TODO call fight later when it is written
+					}
+				}
+			}
+			//TODO call reproduce function
+			//TODO apply Params.rest_energy_cost
+			for(int l = 0; l < critters.size(); l++){
+				if(critters.get(l).energy <= 0){
+					critters.remove(l);
+				}
+			}
 		}
-	}
 	
 	public static void displayWorld() {
 		int width = Params.world_width+2;
