@@ -101,15 +101,13 @@ public abstract class Critter {
 	 */
 	public static void makeCritter(String critter_class_name) throws InvalidCritterException {
 		try {
-
-			Object crit = Class.forName(myPackage+"."+critter_class_name).newInstance();
+			Class<?> critClass = Class.forName(myPackage+"."+critter_class_name);
+			Object crit = critClass.newInstance();
 			((TestCritter) crit).setEnergy(Params.start_energy);
 			((TestCritter) crit).setX_coord(getRandomInt(Params.world_width));
 			((TestCritter) crit).setY_coord(getRandomInt(Params.world_height));
-			if(Class.forName(critter_class_name) != null){
-				throw new InvalidCritterException(critter_class_name);
-				
-			}
+			((Critter) crit).population.add((Critter) crit);
+			
 		}
 			catch(IllegalAccessException a){
 				throw new InvalidCritterException(critter_class_name);
@@ -118,9 +116,9 @@ public abstract class Critter {
 				throw new InvalidCritterException(critter_class_name);
 			}
 			catch(ClassNotFoundException b){
-				
+				System.out.println("ClassNotFoundException");
 			}
-	
+			
 		}
 	
 		
@@ -148,7 +146,16 @@ public abstract class Critter {
 	 */
 	public static List<Critter> getInstances(String critter_class_name) throws InvalidCritterException {
 		List<Critter> result = new java.util.ArrayList<Critter>();
-	
+
+		try{
+			if(Class.forName(myPackage+"."+critter_class_name) == null){
+				throw new InvalidCritterException(critter_class_name);
+			}
+		}
+		catch(ClassNotFoundException b){
+			System.out.println("ClassNotFoundException");
+		}
+		
 		return result;
 	}
 	
@@ -274,13 +281,16 @@ public abstract class Critter {
 			graph[width-1][i] = "-";
 		}
 		//insert Algae to graph
-		for(int i = 0;i<Critter.critters.size();i++){
+		for(int i = 0;i<Algae.getPopulation().size();i++){
 			int x = Algae.getPopulation().get(i).x_coord;
 			int y = Algae.getPopulation().get(i).y_coord;
-			graph[x][y] = Algae.getPopulation().toString();
+			graph[x][y] = Algae.getPopulation().get(i).toString();
 		}
 		for(int i = 0;i<width;i++){
 			for(int j = 0;j<height;j++){
+				if(graph[i][j]==null){
+					graph[i][j] = " ";
+				}
 				System.out.print(graph[i][j]);
 			}
 			System.out.println();
