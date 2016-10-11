@@ -101,10 +101,11 @@ public abstract class Critter {
 	 */
 	public static void makeCritter(String critter_class_name) throws InvalidCritterException {
 		try {
-			TestCritter crit = (TestCritter) Class.forName(critter_class_name).newInstance();
-			crit.setEnergy(Params.start_energy);
-			crit.setX_coord(getRandomInt(Params.world_width));
-			crit.setY_coord(getRandomInt(Params.world_height));
+
+			Object crit = Class.forName(myPackage+"."+critter_class_name).newInstance();
+			((TestCritter) crit).setEnergy(Params.start_energy);
+			((TestCritter) crit).setX_coord(getRandomInt(Params.world_width));
+			((TestCritter) crit).setY_coord(getRandomInt(Params.world_height));
 			if(Class.forName(critter_class_name) != null){
 				throw new InvalidCritterException(critter_class_name);
 				
@@ -258,18 +259,25 @@ public abstract class Critter {
 		int width = Params.world_width+2;
 		int height = Params.world_height+2;
 		
-		char[][] graph = new char[width][height];
-		graph[0][0] ='+';
-		graph[0][height-1]= '+';
-		graph[width-1][0]='+';
-		graph[width-1][height-1] = '+';
+		String[][] graph = new String[width][height];
+		//create graph borders
+		graph[0][0] ="+";
+		graph[0][height-1]= "+";
+		graph[width-1][0]="+";
+		graph[width-1][height-1] = "+";
 		for(int i = 1;i<width-1;i++){
-			graph[i][0] = '|';
-			graph[i][height-1] = '|';
+			graph[i][0] = "|";
+			graph[i][height-1] = "|";
 		}
 		for(int i = 1;i<height-1;i++){
-			graph[0][i] = '-';
-			graph[width-1][i] = '-';
+			graph[0][i] = "-";
+			graph[width-1][i] = "-";
+		}
+		//insert Algae to graph
+		for(int i = 0;i<Critter.critters.size();i++){
+			int x = Algae.getPopulation().get(i).x_coord;
+			int y = Algae.getPopulation().get(i).y_coord;
+			graph[x][y] = Algae.getPopulation().toString();
 		}
 		for(int i = 0;i<width;i++){
 			for(int j = 0;j<height;j++){
@@ -277,5 +285,7 @@ public abstract class Critter {
 			}
 			System.out.println();
 		}
+
+		
 	}
 }
