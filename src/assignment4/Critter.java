@@ -84,6 +84,34 @@ public abstract class Critter {
 	}
 	
 	protected final void reproduce(Critter offspring, int direction) {
+		if(this.energy < Params.min_reproduce_energy){
+			return;
+		}
+		offspring.energy = this.energy;			//no rounding yet
+		this.energy = this.energy / 2;
+		switch(direction){
+		//right
+		case 0: offspring.x_coord = this.x_coord++;
+				break;
+		case 1: offspring.x_coord = this.x_coord++;
+				offspring.y_coord = this.y_coord++;
+				break;
+		case 2: offspring.y_coord = this.y_coord++;
+				break;
+		case 3: offspring.x_coord = this.x_coord--;
+				offspring.y_coord = this.y_coord++;
+				break;
+		case 4: offspring.x_coord = this.x_coord--;
+				break;
+		case 5: offspring.x_coord = this.x_coord--;
+				offspring.y_coord = this.y_coord--;
+				break;
+		case 6: offspring.y_coord = this.y_coord--;
+				break;
+		case 7: offspring.y_coord = this.y_coord--;
+				offspring.x_coord = this.x_coord++;
+				break;
+		}
 	}
 
 	public abstract void doTimeStep();
