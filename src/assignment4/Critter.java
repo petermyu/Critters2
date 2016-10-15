@@ -112,6 +112,7 @@ public abstract class Critter {
 				offspring.x_coord = this.x_coord++;
 				break;
 		}
+		babies.add(offspring);
 	}
 
 	public abstract void doTimeStep();
