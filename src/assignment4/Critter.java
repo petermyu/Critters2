@@ -270,14 +270,38 @@ public abstract class Critter {
 	}
 	
 	public static void worldTimeStep() {
+		int energyA = 0;
+		int energyB = 0;
 			for(int i = 0; i < critters.size(); i++) {
 				critters.get(i).doTimeStep();
 			}
-			for(int j = 0; j < critters.size()-1; j++){					// nested for loop for checking critters in same spot
+			for(int j = 0; j < critters.size()-1; j++){					// nested for loop for checking critters in same spot(encounter)
 				for(int k = j+1; k < critters.size(); k++){
 					if((critters.get(j).x_coord == critters.get(k).x_coord) && (critters.get(j).y_coord == critters.get(k).y_coord)  ){
 						//TODO call fight later when it is written
-					}
+						boolean critA = critters.get(j).fight(critters.get(k).toString());
+						boolean critB = critters.get(k).fight(critters.get(j).toString());
+						if(critA == true){
+							energyA = getRandomInt(critters.get(j).energy);
+						}
+						else if(critA == false){
+							energyA = 0;
+						}
+						if(critB == true){
+							energyB = getRandomInt(critters.get(k).energy);
+						}
+						else if(critB == false){
+							energyB = 0;
+						}
+						if(energyA >= energyB){				//Critter A wins
+							critters.get(j).energy = critters.get(j).energy + (critters.get(k).energy/2);
+							critters.remove(k);
+						}
+						else{								//Critter B wins
+							critters.get(k).energy = critters.get(k).energy + (critters.get(j).energy/2);
+							critters.remove(j);
+						}
+					}	
 				}
 			}
 			//TODO call reproduce function
