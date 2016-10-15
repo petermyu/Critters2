@@ -270,7 +270,7 @@ public abstract class Critter {
 	public static void clearWorld() {
 	}
 	
-	public static void worldTimeStep() {
+	public static void worldTimeStep() {								// all calls to critters list will probably be change to population list
 		int energyA = 0;
 		int energyB = 0;
 			for(int i = 0; i < critters.size(); i++) {
@@ -305,7 +305,12 @@ public abstract class Critter {
 					}	
 				}
 			}
-			//TODO call reproduce function
+			for(int i = 0; i < babies.size(); i++){
+				critters.add(babies.get(i));
+			}
+			for(int j =0; j < critters.size(); j++){
+				critters.get(j).energy = critters.get(j).energy - Params.rest_energy_cost;
+			}
 			//TODO apply Params.rest_energy_cost
 			for(int l = 0; l < critters.size(); l++){
 				if(critters.get(l).energy <= 0){
