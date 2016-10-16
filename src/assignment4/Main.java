@@ -12,6 +12,9 @@
  */
 package assignment4; // cannot be in default package
 import java.util.Scanner;
+
+import com.sun.org.apache.xpath.internal.operations.Equals;
+
 import java.io.*;
 
 
@@ -65,12 +68,78 @@ public class Main {
         } else { // if no arguments to main
             kb = new Scanner(System.in); // use keyboard and console
         }
-        Critter.displayWorld();
+
         /* Do not alter the code above for your submission. */
         /* Write your code below. */
         
         System.out.println("GLHF");
+    
+        String[] parts;
+     //   Critter.displayWorld();
         
+        int numCrits = 0;
+        
+        String input = kb.nextLine();
+        //split input String
+        if(input.contains(" ")){
+	        parts = input.split(" ");
+	      //  input1 = parts[0];
+	     //   input2 = parts[1];
+        }
+        else{
+        	parts = null;
+        }
+        //quit
+        if(parts[0].equals("quit") && parts.length == 1){
+        	System.exit(1);
+        }
+        //make<Critter><count>
+        else if(parts[0].equals("make")){
+        	if(parts.length == 3){
+        		numCrits = Integer.parseInt(parts[2]);
+        	}
+        	else if(parts.length == 2 && parts[1] != null){
+        		numCrits = 1;
+        	}
+        	for(int i = 0;i<numCrits;i++){
+	            try{Critter.makeCritter(parts[1]);}
+	            catch(InvalidCritterException a){
+	            	System.out.println("error processing: " + parts);
+	            }
+        	}
+        }
+        //show
+        else if(parts[0].equals("show") && parts.length == 1){
+        	Critter.displayWorld();
+        }
+        //step <count>
+        else if(parts[0].equals("step")){
+        	if(parts.length == 2 && parts[1] != null){
+        		int x = Integer.parseInt(parts[1]);
+        		for(int i = 0;i<x;i++){
+        			Critter.worldTimeStep();
+        		}
+        	}
+        	else if(parts.length == 1){
+        		Critter.worldTimeStep();
+        	}
+        }
+        //seed <number>
+        else if(parts[0].equals("seed")){
+        	if(parts.length == 2 && parts[1] != null){
+        		int x = Integer.parseInt(parts[1]);
+        		Critter.setSeed(x);
+        	}
+        	else{
+        		System.out.println("Illegal input");
+        	}
+        }
+        else {
+        	System.out.println("error processing: " + parts);
+        }
+        
+        //Critter.displayWorld();
+       
         /* Write your code above */
         System.out.flush();
 
