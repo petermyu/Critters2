@@ -54,7 +54,6 @@ public abstract class Critter {
 	protected final void walk(int direction) {
 		
 		switch(direction){
-		//right
 		case 0: this.x_coord++;
 				break;
 		case 1: this.x_coord++;
@@ -80,6 +79,28 @@ public abstract class Critter {
 	}
 	
 	protected final void run(int direction) {
+		switch(direction){
+		case 0: this.x_coord+=2;
+				break;
+		case 1: this.x_coord+=2;
+				this.y_coord+=2;
+				break;
+		case 2: this.y_coord+=2;
+				break;
+		case 3: this.x_coord-=2;
+				this.y_coord+=2;
+		case 4: this.x_coord-=2;
+				break;
+		case 5: this.x_coord-=2;
+				this.y_coord-=2;
+				break;
+		case 6: this.y_coord-=2;;
+				break;
+		case 7: this.y_coord-=2;
+				this.x_coord+=2;
+				break;
+		}
+		this.energy = this.energy-Params.run_energy_cost;
 		
 	}
 	
