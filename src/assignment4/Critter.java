@@ -84,6 +84,35 @@ public abstract class Critter {
 	}
 	
 	protected final void reproduce(Critter offspring, int direction) {
+		if(this.energy < Params.min_reproduce_energy){
+			return;
+		}
+		offspring.energy = this.energy;			//no rounding yet
+		this.energy = this.energy / 2;
+		switch(direction){
+		//right
+		case 0: offspring.x_coord = this.x_coord++;
+				break;
+		case 1: offspring.x_coord = this.x_coord++;
+				offspring.y_coord = this.y_coord++;
+				break;
+		case 2: offspring.y_coord = this.y_coord++;
+				break;
+		case 3: offspring.x_coord = this.x_coord--;
+				offspring.y_coord = this.y_coord++;
+				break;
+		case 4: offspring.x_coord = this.x_coord--;
+				break;
+		case 5: offspring.x_coord = this.x_coord--;
+				offspring.y_coord = this.y_coord--;
+				break;
+		case 6: offspring.y_coord = this.y_coord--;
+				break;
+		case 7: offspring.y_coord = this.y_coord--;
+				offspring.x_coord = this.x_coord++;
+				break;
+		}
+		babies.add(offspring);
 	}
 
 	public abstract void doTimeStep();
@@ -101,15 +130,13 @@ public abstract class Critter {
 	 */
 	public static void makeCritter(String critter_class_name) throws InvalidCritterException {
 		try {
-
-			Object crit = Class.forName(myPackage+"."+critter_class_name).newInstance();
+			Class<?> critClass = Class.forName(myPackage+"."+critter_class_name);
+			Object crit = critClass.newInstance();
 			((TestCritter) crit).setEnergy(Params.start_energy);
 			((TestCritter) crit).setX_coord(getRandomInt(Params.world_width));
 			((TestCritter) crit).setY_coord(getRandomInt(Params.world_height));
-			if(Class.forName(critter_class_name) != null){
-				throw new InvalidCritterException(critter_class_name);
-				
-			}
+			((Critter) crit).population.add((Critter) crit);
+			
 		}
 			catch(IllegalAccessException a){
 				throw new InvalidCritterException(critter_class_name);
@@ -118,9 +145,9 @@ public abstract class Critter {
 				throw new InvalidCritterException(critter_class_name);
 			}
 			catch(ClassNotFoundException b){
-				
+				System.out.println("ClassNotFoundException");
 			}
-	
+			
 		}
 	
 		
@@ -148,7 +175,18 @@ public abstract class Critter {
 	 */
 	public static List<Critter> getInstances(String critter_class_name) throws InvalidCritterException {
 		List<Critter> result = new java.util.ArrayList<Critter>();
-	
+
+		try{
+			Class<?> critClass = Class.forName(myPackage+"."+critter_class_name);
+			if(critClass == null){
+				throw new InvalidCritterException(critter_class_name);
+			}
+			result = TestCritter.getPopulation();
+		}
+		catch(ClassNotFoundException b){
+			System.out.println("ClassNotFoundException");
+		}
+		
 		return result;
 	}
 	
@@ -234,18 +272,57 @@ public abstract class Critter {
 	public static void clearWorld() {
 	}
 	
-	public static void worldTimeStep() {
+	public static void worldTimeStep() {								// all calls to critters list will probably be change to population list
+		int energyA = 0;
+		int energyB = 0;
 			for(int i = 0; i < critters.size(); i++) {
 				critters.get(i).doTimeStep();
 			}
-			for(int j = 0; j < critters.size()-1; j++){					// nested for loop for checking critters in same spot
+			for(int j = 0; j < critters.size()-1; j++){					// nested for loop for checking critters in same spot(encounter)
 				for(int k = j+1; k < critters.size(); k++){
 					if((critters.get(j).x_coord == critters.get(k).x_coord) && (critters.get(j).y_coord == critters.get(k).y_coord)  ){
 						//TODO call fight later when it is written
-					}
+						boolean critA = critters.get(j).fight(critters.get(k).toString());
+						boolean critB = critters.get(k).fight(critters.get(j).toString());
+						if((critters.get(j).x_coord == critters.get(k).x_coord) && (critters.get(j).y_coord == critters.get(k).y_coord)){
+							if(critters.get(j).energy > 0 && critters.get(k).energy > 0){
+								if(critA == true){
+									energyA = getRandomInt(critters.get(j).energy);
+								}
+								else if(critA == false){
+									energyA = 0;
+								}
+								if(critB == true){
+									energyB = getRandomInt(critters.get(k).energy);
+								}
+								else if(critB == false){
+									energyB = 0;
+								}
+								if(energyA >= energyB){				//Critter A wins
+									critters.get(j).energy = critters.get(j).energy + (critters.get(k).energy/2);
+									critters.remove(k);
+								}
+								else{								//Critter B wins
+									critters.get(k).energy = critters.get(k).energy + (critters.get(j).energy/2);
+									critters.remove(j);
+								}
+							}
+							if(critters.get(j).energy <= 0){
+								critters.remove(j);
+							}
+							if(critters.get(k).energy <= 0){
+								critters.remove(k);
+							}
+						}
+					}	
 				}
 			}
-			//TODO call reproduce function
+			for(int i = 0; i < babies.size(); i++){
+				critters.add(babies.get(i));
+			}
+			for(int j =0; j < critters.size(); j++){
+				critters.get(j).energy = critters.get(j).energy - Params.rest_energy_cost;
+			}
 			//TODO apply Params.rest_energy_cost
 			for(int l = 0; l < critters.size(); l++){
 				if(critters.get(l).energy <= 0){
@@ -274,13 +351,16 @@ public abstract class Critter {
 			graph[width-1][i] = "-";
 		}
 		//insert Algae to graph
-		for(int i = 0;i<Critter.critters.size();i++){
+		for(int i = 0;i<Algae.getPopulation().size();i++){
 			int x = Algae.getPopulation().get(i).x_coord;
 			int y = Algae.getPopulation().get(i).y_coord;
-			graph[x][y] = Algae.getPopulation().toString();
+			graph[x][y] = Algae.getPopulation().get(i).toString();
 		}
 		for(int i = 0;i<width;i++){
 			for(int j = 0;j<height;j++){
+				if(graph[i][j]==null){
+					graph[i][j] = " ";
+				}
 				System.out.print(graph[i][j]);
 			}
 			System.out.println();
