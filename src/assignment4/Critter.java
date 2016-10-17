@@ -78,6 +78,7 @@ public abstract class Critter {
 		
 	}
 	
+	
 	protected final void run(int direction) {
 		switch(direction){
 		case 0: this.x_coord+=2;
@@ -103,6 +104,7 @@ public abstract class Critter {
 		this.energy = this.energy-Params.run_energy_cost;
 		
 	}
+	
 	
 	protected final void reproduce(Critter offspring, int direction) {
 		if(this.energy < Params.min_reproduce_energy){

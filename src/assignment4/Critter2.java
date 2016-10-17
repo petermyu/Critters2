@@ -1,32 +1,43 @@
 package assignment4;
 
-public class Critter1 extends Critter
+public class Critter2 extends Critter
 {
 	@Override
-	public String toString() { return "1"; }
-	
+	public String toString() { return "2"; }
+	private boolean hasWalk;						// boolean value to check if Critter2 had walked already in TimeStep
+	private static int energy = 50;
 	private static final int GENE_TOTAL = 24;
 	private int[] genes = new int[8];
 	private int dir;
 	
-	public Critter1() {
+	public Critter2() {
 		for (int k = 0; k < 8; k += 1) {
 			genes[k] = GENE_TOTAL / 8;
 		}
 		dir = Critter.getRandomInt(8);
 	}
 	
-	public boolean fight(String not_used) { // Critter1 will fight
-		return true; 
+	public boolean fight(String not_used) { // Critter2 will walk but cannot because it has walked in doTimeStep already
+		if(hasWalk){
+			Critter2.energy = Critter2.energy - Params.walk_energy_cost;
+			hasWalk = false;
+			return false;
+		}
+		else{
+			walk(dir);
+			hasWalk = false;
+			return false;
+		}
 	}
 
 	@Override
 	public void doTimeStep() {
 		/* take one step forward */
 		walk(dir);
+		hasWalk = true;
 		
 		if (getEnergy() > 150) {
-			Critter1 child = new Critter1();
+			Critter2 child = new Critter2();
 			for (int k = 0; k < 8; k += 1) {
 				child.genes[k] = this.genes[k];
 			}
@@ -58,7 +69,7 @@ public class Critter1 extends Critter
 		int total_right = 0;
 		int total_back = 0;
 		for (Object obj : craigs) {
-			Critter1 c = (Critter1) obj;
+			Critter2 c = (Critter2) obj;
 			total_straight += c.genes[0];
 			total_right += c.genes[1] + c.genes[2] + c.genes[3];
 			total_back += c.genes[4];
