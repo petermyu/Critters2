@@ -11,11 +11,13 @@
  * Fall 2016
  */
 package assignment4; // cannot be in default package
+import java.util.List;
 import java.util.Scanner;
 
 import com.sun.org.apache.xpath.internal.operations.Equals;
 
 import java.io.*;
+import java.lang.reflect.InvocationTargetException;
 
 
 /*
@@ -71,7 +73,7 @@ public class Main {
 
         /* Do not alter the code above for your submission. */
         /* Write your code below. */
-        
+        while(true){
         System.out.println("GLHF");
     
         String[] parts;
@@ -134,6 +136,32 @@ public class Main {
         		System.out.println("Illegal input");
         	}
         }
+        else if(parts[0].equals("stats")){
+        	if(parts.length == 2){
+        		try {
+        			Class<?> crit = Class.forName(myPackage + "." + parts[1]);
+        			Class<?>[] types = {List.class};
+					List<Critter> list = Critter.getInstances(parts[1]);
+					crit.getMethod("runStats", types).invoke(null, list);
+				} catch (InvalidCritterException e) {
+					System.out.println("error processing: " + input);
+				}
+        		catch (ClassNotFoundException e1){
+        			System.out.println("error processing: " + input);
+        		} catch (IllegalAccessException e) {
+        			System.out.println(e);
+				} catch (IllegalArgumentException e) {
+					System.out.println(e);
+				} catch (InvocationTargetException e) {
+					System.out.println(e);
+				} catch (NoSuchMethodException e) {
+					System.out.println(e);
+				} catch (SecurityException e) {
+					System.out.println(e);
+				}
+        		
+        	}
+        }
         else {
         	System.out.println("error processing: " + parts);
         }
@@ -141,7 +169,7 @@ public class Main {
         //Critter.displayWorld();
        
         /* Write your code above */
-        System.out.flush();
+    }
 
     }
 }
