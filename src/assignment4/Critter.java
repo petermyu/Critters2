@@ -13,6 +13,8 @@
  */
 package assignment4;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 /* see the PDF for descriptions of the methods and fields in this class
@@ -102,11 +104,15 @@ public abstract class Critter {
 	public static void makeCritter(String critter_class_name) throws InvalidCritterException {
 		try {
 			Class<?> critClass = Class.forName(myPackage+"."+critter_class_name);
-			Object crit = critClass.newInstance();
-			((TestCritter) crit).setEnergy(Params.start_energy);
-			((TestCritter) crit).setX_coord(getRandomInt(Params.world_width));
-			((TestCritter) crit).setY_coord(getRandomInt(Params.world_height));
-			((Critter) crit).population.add((Critter) crit);
+			Constructor<?> newConstructor = critClass.getConstructor();
+			Object crit = newConstructor.newInstance();
+			Critter newCrit = (Critter) crit;
+			((Critter) newCrit).energy = Params.start_energy;
+			((Critter) newCrit).x_coord = getRandomInt(Params.world_width);
+			((Critter) newCrit).y_coord = getRandomInt(Params.world_height);
+			Critter.population.add((Critter) newCrit);
+			
+			
 			
 		}
 			catch(IllegalAccessException a){
@@ -120,6 +126,18 @@ public abstract class Critter {
 			}
 			catch(NoClassDefFoundError b){
 				throw new InvalidCritterException(critter_class_name);
+			} catch (NoSuchMethodException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SecurityException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalArgumentException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 			
 		}
@@ -198,7 +216,7 @@ public abstract class Critter {
 	 * to the x_coord and y_coord functions, then you MUST update these setter functions
 	 * so that they correctly update your grid/data structure.
 	 */
-	static abstract class TestCritter extends Critter {
+	static abstract class TestCritter extends Critter { 
 		protected void setEnergy(int new_energy_value) {
 			super.energy = new_energy_value;
 		}
@@ -285,12 +303,13 @@ public abstract class Critter {
 			graph[0][i] = "-";
 			graph[width-1][i] = "-";
 		}
-		//insert Algae to graph
-		for(int i = 0;i<Algae.getPopulation().size();i++){
-			int x = Algae.getPopulation().get(i).x_coord+1;
-			int y = Algae.getPopulation().get(i).y_coord+1;
-			graph[x][y] = Algae.getPopulation().get(i).toString();
+		//insert Critters into graph
+		for(int i = 0;i<Critter.population.size();i++){
+			int x = Critter.population.get(i).x_coord+1;
+			int y = Critter.population.get(i).y_coord+1;
+			graph[x][y] = Critter.population.get(i).toString();
 		}
+		
 		for(int i = 0;i<width;i++){
 			for(int j = 0;j<height;j++){
 				if(graph[i][j]==null){
@@ -301,6 +320,5 @@ public abstract class Critter {
 			System.out.println();
 		}
 
-		
 	}
 }
