@@ -307,6 +307,12 @@ public abstract class Critter {
 									critters.remove(j);
 								}
 							}
+							if(critters.get(j).energy <= 0){
+								critters.remove(j);
+							}
+							if(critters.get(k).energy <= 0){
+								critters.remove(k);
+							}
 						}
 					}	
 				}
