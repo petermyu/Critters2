@@ -177,9 +177,11 @@ public abstract class Critter {
 		List<Critter> result = new java.util.ArrayList<Critter>();
 
 		try{
-			if(Class.forName(myPackage+"."+critter_class_name) == null){
+			Class<?> critClass = Class.forName(myPackage+"."+critter_class_name);
+			if(critClass == null){
 				throw new InvalidCritterException(critter_class_name);
 			}
+			result = TestCritter.getPopulation();
 		}
 		catch(ClassNotFoundException b){
 			System.out.println("ClassNotFoundException");
