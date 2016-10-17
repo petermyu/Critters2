@@ -89,7 +89,7 @@ public class Main {
 	     //   input2 = parts[1];
         }
         else{
-        	parts = null;
+        	parts = new String[] {input};
         }
         //quit
         if(parts[0].equals("quit") && parts.length == 1){
@@ -106,7 +106,7 @@ public class Main {
         	for(int i = 0;i<numCrits;i++){
 	            try{Critter.makeCritter(parts[1]);}
 	            catch(InvalidCritterException a){
-	            	System.out.println("error processing: " + parts);
+	            	System.out.println("error processing: " + input);
 	            }
         	}
         }
@@ -132,9 +132,6 @@ public class Main {
         		int x = Integer.parseInt(parts[1]);
         		Critter.setSeed(x);
         	}
-        	else{
-        		System.out.println("Illegal input");
-        	}
         }
         else if(parts[0].equals("stats")){
         	if(parts.length == 2){
@@ -149,24 +146,24 @@ public class Main {
         		catch (ClassNotFoundException e1){
         			System.out.println("error processing: " + input);
         		} catch (IllegalAccessException e) {
-        			System.out.println(e);
+        			System.out.println("error processing: " + input);
 				} catch (IllegalArgumentException e) {
-					System.out.println(e);
+					System.out.println("error processing: " + input);
 				} catch (InvocationTargetException e) {
-					System.out.println(e);
+					System.out.println("error processing: " + input);
 				} catch (NoSuchMethodException e) {
-					System.out.println(e);
+					System.out.println("error processing: " + input);
 				} catch (SecurityException e) {
-					System.out.println(e);
+					System.out.println("error processing: " + input);
 				}
         		
         	}
         }
         else {
-        	System.out.println("error processing: " + parts);
+        	System.out.println("invalid command: " + input);
         }
         
-        //Critter.displayWorld();
+;        //Critter.displayWorld();
        
         /* Write your code above */
     }

@@ -116,7 +116,10 @@ public abstract class Critter {
 				throw new InvalidCritterException(critter_class_name);
 			}
 			catch(ClassNotFoundException b){
-				System.out.println("ClassNotFoundException");
+				throw new InvalidCritterException(critter_class_name);
+			}
+			catch(NoClassDefFoundError b){
+				throw new InvalidCritterException(critter_class_name);
 			}
 			
 		}
@@ -284,8 +287,8 @@ public abstract class Critter {
 		}
 		//insert Algae to graph
 		for(int i = 0;i<Algae.getPopulation().size();i++){
-			int x = Algae.getPopulation().get(i).x_coord;
-			int y = Algae.getPopulation().get(i).y_coord;
+			int x = Algae.getPopulation().get(i).x_coord+1;
+			int y = Algae.getPopulation().get(i).y_coord+1;
 			graph[x][y] = Algae.getPopulation().get(i).toString();
 		}
 		for(int i = 0;i<width;i++){
