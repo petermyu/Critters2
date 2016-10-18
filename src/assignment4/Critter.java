@@ -28,6 +28,7 @@ public abstract class Critter {
 	private static List<Critter> critters = new java.util.ArrayList<Critter>();
 	private	static List<Critter> population = new java.util.ArrayList<Critter>();
 	private static List<Critter> babies = new java.util.ArrayList<Critter>();
+	
 
 	// Gets the package name.  This assumes that Critter and its subclasses are all in the same package.
 	static {
@@ -46,7 +47,7 @@ public abstract class Critter {
 	
 	/* a one-character long string that visually depicts your critter in the ASCII interface */
 	public String toString() { return ""; }
-	
+	private boolean moveFlag = false;
 	private int energy = 0;
 	protected int getEnergy() { return energy; }
 	
@@ -54,29 +55,83 @@ public abstract class Critter {
 	private int y_coord;
 	
 	protected final void walk(int direction) {
-		
-		switch(direction){
-		case 0: this.x_coord++;
-				break;
-		case 1: this.x_coord++;
-				this.y_coord++;
-				break;
-		case 2: this.y_coord++;
-				break;
-		case 3: this.x_coord--;
-				this.y_coord++;
-		case 4: this.x_coord--;
-				break;
-		case 5: this.x_coord--;
-				this.y_coord--;
-				break;
-		case 6: this.y_coord--;
-				break;
-		case 7: this.y_coord--;
-				this.x_coord++;
-				break;
+		int backDir  = 0;
+		if(moveFlag == false){
+			switch(direction){
+				case 0: this.x_coord++;
+					moveFlag = true;
+					backDir = 4;
+					break;
+				case 1: this.x_coord++;
+					this.y_coord++;
+					moveFlag = true;
+					backDir = 5;
+					break;
+				case 2: this.y_coord++;
+					moveFlag = true;
+					backDir = 6;
+					break;
+				case 3: this.x_coord--;
+					this.y_coord++;
+					moveFlag = true;
+					backDir = 7;
+				case 4: this.x_coord--;
+					moveFlag = true;
+					backDir = 0;
+					break;
+				case 5: this.x_coord--;
+					this.y_coord--;
+					moveFlag = true;
+					backDir = 1;
+					break;
+				case 6: this.y_coord--;
+					moveFlag = true;
+					backDir = 2;
+					break;
+				case 7: this.y_coord--;
+					this.x_coord++;
+					moveFlag = true;
+					backDir = 3;
+					break;
+			}
+			this.energy = this.energy-Params.walk_energy_cost;
+			for(int i = 0; i < population.size(); i++){
+				if(this.x_coord == population.get(i).x_coord && this.y_coord == population.get(i).y_coord){
+					switch(backDir){
+						case 0: this.x_coord++;
+							moveFlag = true;
+							break;
+						case 1: this.x_coord++;
+							this.y_coord++;
+							moveFlag = true;
+							break;
+						case 2: this.y_coord++;
+							moveFlag = true;
+							break;
+						case 3: this.x_coord--;
+							this.y_coord++;
+							moveFlag = true;
+						case 4: this.x_coord--;
+							moveFlag = true;
+							break;
+						case 5: this.x_coord--;
+							this.y_coord--;
+							moveFlag = true;
+							break;						
+						case 6: this.y_coord--;
+							moveFlag = true;
+							break;
+						case 7: this.y_coord--;
+							this.x_coord++;
+							moveFlag = true;
+							break;
+					}
+				}
+			}
 		}
-		this.energy = this.energy-Params.walk_energy_cost;
+		else if(moveFlag = true){
+			this.energy = this.energy-Params.walk_energy_cost;
+		}
 		
 	}
 	
