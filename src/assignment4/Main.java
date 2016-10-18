@@ -93,7 +93,7 @@ public class Main {
         }
         //quit
         if(parts[0].equals("quit") && parts.length == 1){
-        	System.exit(1);
+        	break;
         }
         //make<Critter><count>
         else if(parts[0].equals("make")){
@@ -107,6 +107,7 @@ public class Main {
 	            try{Critter.makeCritter(parts[1]);}
 	            catch(InvalidCritterException a){
 	            	System.out.println("error processing: " + input);
+	            	break;
 	            }
         	}
         }
