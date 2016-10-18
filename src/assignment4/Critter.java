@@ -234,17 +234,13 @@ public abstract class Critter {
 			catch(NoClassDefFoundError b){
 				throw new InvalidCritterException(critter_class_name);
 			} catch (NoSuchMethodException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				throw new InvalidCritterException(critter_class_name);
 			} catch (SecurityException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				throw new InvalidCritterException(critter_class_name);
 			} catch (IllegalArgumentException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				throw new InvalidCritterException(critter_class_name);
 			} catch (InvocationTargetException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				throw new InvalidCritterException(critter_class_name);
 			}
 			
 		}
