@@ -25,7 +25,6 @@ import java.util.List;
 
 public abstract class Critter {
 	private static String myPackage;
-	private static List<Critter> critters = new java.util.ArrayList<Critter>();
 	private	static List<Critter> population = new java.util.ArrayList<Critter>();
 	private static List<Critter> babies = new java.util.ArrayList<Critter>();
 	
@@ -137,29 +136,69 @@ public abstract class Critter {
 	
 	
 	protected final void run(int direction) {
-		switch(direction){
-		case 0: this.x_coord+=2;
-				break;
-		case 1: this.x_coord+=2;
-				this.y_coord+=2;
-				break;
-		case 2: this.y_coord+=2;
-				break;
-		case 3: this.x_coord-=2;
-				this.y_coord+=2;
-		case 4: this.x_coord-=2;
-				break;
-		case 5: this.x_coord-=2;
-				this.y_coord-=2;
-				break;
-		case 6: this.y_coord-=2;;
-				break;
-		case 7: this.y_coord-=2;
-				this.x_coord+=2;
-				break;
+		int backDir = 0;
+		if(moveFlag == false){
+			switch(direction){
+			case 0: this.x_coord+=2;
+					backDir = 4;
+					break;
+			case 1: this.x_coord+=2;
+					this.y_coord+=2;
+					backDir = 5;
+					break;
+			case 2: this.y_coord+=2;
+					backDir = 6;
+					break;
+			case 3: this.x_coord-=2;
+					this.y_coord+=2;
+					backDir = 7;
+					break;
+			case 4: this.x_coord-=2;
+					backDir = 0;
+					break;
+			case 5: this.x_coord-=2;
+					this.y_coord-=2;
+					backDir = 1;
+					break;
+			case 6: this.y_coord-=2;
+					backDir = 2;
+					break;
+			case 7: this.y_coord-=2;
+					this.x_coord+=2;
+					backDir = 3;
+					break;
+			}
+			this.energy = this.energy-Params.run_energy_cost;
+			for(int i = 0; i < population.size(); i++){
+				if(this.x_coord == population.get(i).x_coord && this.y_coord == population.get(i).y_coord){
+					switch(backDir){
+						case 0: this.x_coord+=2;
+								break;
+						case 1: this.x_coord+=2;
+								this.y_coord+=2;
+								break;
+						case 2: this.y_coord+=2;
+								break;
+						case 3: this.x_coord-=2;
+								this.y_coord+=2;
+								break;
+						case 4: this.x_coord-=2;
+								break;
+						case 5: this.x_coord-=2;
+								this.y_coord-=2;
+								break;
+						case 6: this.y_coord-=2;
+								break;
+						case 7: this.y_coord-=2;
+								this.x_coord+=2;
+								break;
+					}
+				}
+			}
 		}
-		this.energy = this.energy-Params.run_energy_cost;
-		
+		else if(moveFlag == true){
+			this.energy = this.energy-Params.run_energy_cost;
+		}
 	}
 	
 	
@@ -370,58 +409,66 @@ public abstract class Critter {
 	public static void worldTimeStep() {								// all calls to critters list will probably be change to population list
 		int energyA = 0;
 		int energyB = 0;
-			for(int i = 0; i < critters.size(); i++) {
-				critters.get(i).doTimeStep();
+			for(int i = 0; i < population.size(); i++) {
+				population.get(i).doTimeStep();
 			}
-			for(int j = 0; j < critters.size()-1; j++){					// nested for loop for checking critters in same spot(encounter)
-				for(int k = j+1; k < critters.size(); k++){
-					if((critters.get(j).x_coord == critters.get(k).x_coord) && (critters.get(j).y_coord == critters.get(k).y_coord)  ){
+			for(int j = 0; j < population.size()-1; j++){					// nested for loop for checking critters in same spot(encounter)
+				for(int k = j+1; k < population.size(); k++){
+					if((population.get(j).x_coord == population.get(k).x_coord) && (population.get(j).y_coord == population.get(k).y_coord)  ){
 						//TODO call fight later when it is written
-						boolean critA = critters.get(j).fight(critters.get(k).toString());
-						boolean critB = critters.get(k).fight(critters.get(j).toString());
-						if((critters.get(j).x_coord == critters.get(k).x_coord) && (critters.get(j).y_coord == critters.get(k).y_coord)){
-							if(critters.get(j).energy > 0 && critters.get(k).energy > 0){
+						boolean critA = population.get(j).fight(population.get(k).toString());
+						boolean critB = population.get(k).fight(population.get(j).toString());
+						if((population.get(j).x_coord == population.get(k).x_coord) && (population.get(j).y_coord == population.get(k).y_coord)){
+							if(population.get(j).energy > 0 && population.get(k).energy > 0){
 								if(critA == true){
-									energyA = getRandomInt(critters.get(j).energy);
+									energyA = getRandomInt(population.get(j).energy);
 								}
 								else if(critA == false){
 									energyA = 0;
 								}
 								if(critB == true){
-									energyB = getRandomInt(critters.get(k).energy);
+									energyB = getRandomInt(population.get(k).energy);
 								}
 								else if(critB == false){
 									energyB = 0;
 								}
 								if(energyA >= energyB){				//Critter A wins
-									critters.get(j).energy = critters.get(j).energy + (critters.get(k).energy/2);
-									critters.remove(k);
+									population.get(j).energy = population.get(j).energy + (population.get(k).energy/2);
+									population.remove(k);
 								}
 								else{								//Critter B wins
-									critters.get(k).energy = critters.get(k).energy + (critters.get(j).energy/2);
-									critters.remove(j);
+									population.get(k).energy = population.get(k).energy + (population.get(j).energy/2);
+									population.remove(j);
 								}
 							}
-							if(critters.get(j).energy <= 0){
-								critters.remove(j);
+							if(population.get(j).energy <= 0){
+								population.remove(j);
 							}
-							if(critters.get(k).energy <= 0){
-								critters.remove(k);
+							if(population.get(k).energy <= 0){
+								population.remove(k);
 							}
 						}
 					}	
 				}
 			}
 			for(int i = 0; i < babies.size(); i++){
-				critters.add(babies.get(i));
+				population.add(babies.get(i));
 			}
-			for(int j =0; j < critters.size(); j++){
-				critters.get(j).energy = critters.get(j).energy - Params.rest_energy_cost;
+			for(int j =0; j < population.size(); j++){
+				population.get(j).energy = population.get(j).energy - Params.rest_energy_cost;
 			}
-			//TODO apply Params.rest_energy_cost
-			for(int l = 0; l < critters.size(); l++){
-				if(critters.get(l).energy <= 0){
-					critters.remove(l);
+			for(int l = 0; l < population.size(); l++){
+				if(population.get(l).energy <= 0){
+					population.remove(l);
+				}
+			}
+			for(int i = 0; i < Params.refresh_algae_count; i++){
+			
+				try {
+					makeCritter(myPackage + ".Algae");
+				} catch (InvalidCritterException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 			}
 
