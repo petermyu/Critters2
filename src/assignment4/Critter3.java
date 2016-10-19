@@ -1,5 +1,6 @@
-package assignment4;
 
+
+package assignment4;
 public class Critter3 extends Critter{
 
 	private int dir;
@@ -23,7 +24,10 @@ public class Critter3 extends Critter{
 		// TODO Auto-generated method stub
 		run(dir);
 		Critter3 offspring = new Critter3();
-		
+		int x = Critter.getRandomInt(1);
+		if(x == 0){
+		reproduce(offspring,dir);
+		}
 	}
 
 	@Override
@@ -37,5 +41,9 @@ public class Critter3 extends Critter{
 			return false;
 		}
 	}
+	public static void runStats(java.util.List<Critter> crit3){
+		System.out.println("" + crit3.size() + " Critter3's active");
+	}
+	
 	
 }
