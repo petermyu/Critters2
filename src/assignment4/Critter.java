@@ -450,6 +450,7 @@ public abstract class Critter {
 			}
 			for(int j =0; j < population.size(); j++){
 				population.get(j).energy = population.get(j).energy - Params.rest_energy_cost;
+				population.get(j).moveFlag = false;
 			}
 			for(int l = 0; l < population.size(); l++){
 				if(population.get(l).energy <= 0){
