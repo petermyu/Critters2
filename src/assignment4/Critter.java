@@ -441,12 +441,6 @@ public abstract class Critter {
 									population.remove(j);
 								}
 							}
-							if(population.get(j).energy <= 0){
-								population.remove(j);
-							}
-							if(population.get(k).energy <= 0){
-								population.remove(k);
-							}
 						}
 					}	
 				}
@@ -465,12 +459,12 @@ public abstract class Critter {
 			for(int i = 0; i < Params.refresh_algae_count; i++){
 			
 				try {
-					makeCritter(myPackage + ".Algae");
+					makeCritter("Algae");
 				} catch (InvalidCritterException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					
 				}
 			}
+			
 
 		}
 	
