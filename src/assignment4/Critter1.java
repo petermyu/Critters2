@@ -1,18 +1,35 @@
+/* CRITTERS Main.java
+ * EE422C Project 4 submission by
+ * Replace <...> with your actual data.
+ * <Peter Yu>
+ * <pmy89>
+ * <16455>
+ * <Christopher Ong>
+ * <cio247>
+ * <16445>
+ * Slip days used: <0>
+ * Fall 2016
+ */
+/*
+ * Critter1:
+ * When instantiated, Critter1 is given a random direction
+ * Overrides toString() and returns "1"
+ * Critter1 objects will always fight
+ * After doTimeStep is called, the Critter1 object will
+ * walk in its given direction. It will then change its
+ * direction by 120 degrees
+ * 
+ */
 package assignment4;
 
 public class Critter1 extends Critter
 {
 	@Override
 	public String toString() { return "1"; }
-	
-	private static final int GENE_TOTAL = 24;
-	private int[] genes = new int[8];
 	private int dir;
 	
 	public Critter1() {
-		for (int k = 0; k < 8; k += 1) {
-			genes[k] = GENE_TOTAL / 8;
-		}
+
 		dir = Critter.getRandomInt(8);
 	}
 	
@@ -25,9 +42,5 @@ public class Critter1 extends Critter
 		/* take one step forward */
 		walk(dir);
 		dir += 3;
-	}
-
-	public static void runStats(java.util.List<Critter> craigs) {
-
 	}
 }

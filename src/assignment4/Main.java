@@ -1,12 +1,12 @@
 /* CRITTERS Main.java
  * EE422C Project 4 submission by
  * Replace <...> with your actual data.
- * <Student1 Name>
- * <Student1 EID>
- * <Student1 5-digit Unique No.>
- * <Student2 Name>
- * <Student2 EID>
- * <Student2 5-digit Unique No.>
+ * <Peter Yu>
+ * <pmy89>
+ * <16455>
+ * <Christopher Ong>
+ * <cio247>
+ * <16445>
  * Slip days used: <0>
  * Fall 2016
  */
@@ -74,8 +74,6 @@ public class Main {
         /* Do not alter the code above for your submission. */
         /* Write your code below. */
         while(true){
-        System.out.println("GLHF");
-    
         String[] parts;
      //   Critter.displayWorld();
         

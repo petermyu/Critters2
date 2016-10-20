@@ -1,6 +1,29 @@
 
 
 package assignment4;
+/* CRITTERS Main.java
+ * EE422C Project 4 submission by
+ * Replace <...> with your actual data.
+ * <Peter Yu>
+ * <pmy89>
+ * <16455>
+ * <Christopher Ong>
+ * <cio247>
+ * <16445>
+ * Slip days used: <0>
+ * Fall 2016
+ */
+/*
+ * Critter3:
+ * When instantiated, Critter4 is given a random direction
+ * Overrides toString() and returns "4"
+ * After doTimeStep is called, the Critter1 object will
+ * run in its given direction. It then has a 50% chance 
+ * of calling the reproduce method
+ * Critter4 objects have a 25% chance of fighting an
+ * opponent Critter
+ * runStats prints how many Critter4 objects are alive
+ */
 public class Critter4 extends Critter{
 	private int dir;
 
@@ -26,7 +49,8 @@ public class Critter4 extends Critter{
 	public boolean fight(String opponent) {
 		// TODO Auto-generated method stub
 		Critter3 crit = new Critter3();
-		if(crit.toString().charAt(0) < opponent.charAt(0) ){
+		int x = Critter.getRandomInt(3);
+		if(x == 0){
 			return true;
 		}
 		else{

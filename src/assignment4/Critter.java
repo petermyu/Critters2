@@ -1,13 +1,12 @@
-/* CRITTERS Critter.java
-
+/* CRITTERS Main.java
  * EE422C Project 4 submission by
  * Replace <...> with your actual data.
  * <Peter Yu>
  * <pmy89>
- * <Student1 5-digit Unique No.>
+ * <16455>
  * <Christopher Ong>
  * <cio247>
- * <Student2 5-digit Unique No.>
+ * <16445>
  * Slip days used: <0>
  * Fall 2016
  */

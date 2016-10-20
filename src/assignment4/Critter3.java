@@ -1,18 +1,35 @@
 
 
 package assignment4;
+/* CRITTERS Main.java
+ * EE422C Project 4 submission by
+ * Replace <...> with your actual data.
+ * <Peter Yu>
+ * <pmy89>
+ * <16455>
+ * <Christopher Ong>
+ * <cio247>
+ * <16445>
+ * Slip days used: <0>
+ * Fall 2016
+ */
+/*
+ * Critter3:
+ * When instantiated, Critter3 is given a random direction
+ * Overrides toString() and returns "3"
+ * Critter3 objects will always fight
+ * After doTimeStep is called, the Critter1 object will
+ * run in its given direction. It then has a 50% chance 
+ * of calling the reproduce method
+ * Critter3 objects will fight another Critter if the 
+ * opponent Critter's toString character value is less than
+ * its own
+ * runStats prints how many Critter3 objects are alive
+ */
 public class Critter3 extends Critter{
 
 	private int dir;
-	private int str;
 	public Critter3(){
-		int x = Critter.getRandomInt(10);
-		if(x%2 == 1){
-			str = 100;
-		}
-		else{
-			str = 0;
-		}
 		dir = Critter.getRandomInt(8);
 	}
 	@Override
