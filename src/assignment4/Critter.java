@@ -205,7 +205,7 @@ public abstract class Critter {
 		if(this.energy < Params.min_reproduce_energy){
 			return;
 		}
-		offspring.energy = this.energy;			//no rounding yet
+		offspring.energy = this.energy / 2;			//no rounding yet
 		this.energy = this.energy / 2;
 		switch(direction){
 		//right
