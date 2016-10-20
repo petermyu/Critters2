@@ -1,6 +1,4 @@
-package assignment4;
-
-/* CRITTERS Main.java
+/* CRITTERS Critter2.java
  * EE422C Project 4 submission by
  * Replace <...> with your actual data.
  * <Peter Yu>
@@ -22,6 +20,7 @@ package assignment4;
  * direction by 45 degrees
  * 
  */
+package assignment4;
 public class Critter2 extends Critter
 {
 	@Override

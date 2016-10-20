@@ -1,7 +1,4 @@
-
-
-package assignment4;
-/* CRITTERS Main.java
+/* CRITTERS Critter3.java
  * EE422C Project 4 submission by
  * Replace <...> with your actual data.
  * <Peter Yu>
@@ -26,6 +23,7 @@ package assignment4;
  * its own
  * runStats prints how many Critter3 objects are alive
  */
+package assignment4;
 public class Critter3 extends Critter{
 
 	private int dir;
