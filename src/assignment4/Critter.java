@@ -40,6 +40,7 @@ public abstract class Critter {
 	
 	public static void setSeed(long new_seed) {
 		rand = new java.util.Random(new_seed);
+		
 	}
 	
 	
@@ -256,8 +257,6 @@ public abstract class Critter {
 			((Critter) newCrit).x_coord = getRandomInt(Params.world_width);
 			((Critter) newCrit).y_coord = getRandomInt(Params.world_height);
 			Critter.population.add((Critter) newCrit);
-			
-			
 			
 		}
 			catch(IllegalAccessException a){
