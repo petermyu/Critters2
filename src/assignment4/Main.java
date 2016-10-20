@@ -74,6 +74,7 @@ public class Main {
         /* Do not alter the code above for your submission. */
         /* Write your code below. */
         while(true){
+        System.out.print("critters> ");
         String[] parts;
      //   Critter.displayWorld();
         
@@ -95,19 +96,30 @@ public class Main {
         }
         //make<Critter><count>
         else if(parts[0].equals("make")){
-        	if(parts.length == 3){
-        		numCrits = Integer.parseInt(parts[2]);
+        	try{
+	        	if(parts.length  ==2 || parts.length == 3){
+		        	if(parts.length == 3){
+		        		numCrits = Integer.parseInt(parts[2]);
+		        	}
+		        	else if(parts.length == 2 && parts[1] != null){
+		        		numCrits = 1;
+		        	}
+		        	for(int i = 0;i<numCrits;i++){
+			            try{Critter.makeCritter(parts[1]);}
+			            catch(InvalidCritterException a){
+			            	System.out.println("error processing: " + input);
+			            	break;
+			            }
+		        	}
+	        	}
+	        	else{
+	        		System.out.println("error processing: " + input);
+	        	}
         	}
-        	else if(parts.length == 2 && parts[1] != null){
-        		numCrits = 1;
+        	catch(NumberFormatException e){
+        		System.out.println("error processing: " + input);
         	}
-        	for(int i = 0;i<numCrits;i++){
-	            try{Critter.makeCritter(parts[1]);}
-	            catch(InvalidCritterException a){
-	            	System.out.println("error processing: " + input);
-	            	break;
-	            }
-        	}
+        	
         }
         //show
         else if(parts[0].equals("show") && parts.length == 1){
@@ -115,6 +127,7 @@ public class Main {
         }
         //step <count>
         else if(parts[0].equals("step")){
+        	try{
         	if(parts.length == 2 && parts[1] != null){
         		int x = Integer.parseInt(parts[1]);
         		for(int i = 0;i<x;i++){
@@ -124,12 +137,22 @@ public class Main {
         	else if(parts.length == 1){
         		Critter.worldTimeStep();
         	}
+        	}
+        	catch(NumberFormatException e){
+            	System.out.println("error processing: " + input);
+        	}
         }
         //seed <number>
         else if(parts[0].equals("seed")){
-        	if(parts.length == 2 && parts[1] != null){
+        	try{
+        
+               	if(parts.length == 2 && parts[1] != null){
         		int x = Integer.parseInt(parts[1]);
         		Critter.setSeed(x);
+        	}
+        	}
+        	catch(NumberFormatException e){
+            	System.out.println("error processing: " + input);
         	}
         }
         else if(parts[0].equals("stats")){
