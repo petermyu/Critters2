@@ -52,8 +52,86 @@ public abstract class Critter {
 	
 
 	// Gets the package name.  This assumes that Critter and its subclasses are all in the same package.
-	static {
-		myPackage = Critter.class.getPackage().toString().split(" ")[1];
+	protected String look(int direction, boolean steps) {
+		int x = 0;
+		int y = 0;
+		if(steps = false){
+			switch(direction){
+			case 0: x = this.x_coord + 1;
+					y = this.y_coord;
+					break;
+			case 1: x = this.x_coord + 1;
+					y = this.y_coord + 1;
+					break;
+			case 2: x = this.x_coord;
+					y = this.y_coord + 1;
+					break;
+			case 3: x = this.x_coord - 1;
+					y = this.y_coord + 1;
+					break;
+			case 4: x = this.x_coord - 1;
+					y = this.y_coord;
+					break;
+			case 5: x = this.x_coord - 1;
+					y = this.y_coord - 1;
+					break;
+			case 6: x = this.x_coord;
+					y = this.y_coord - 1;
+					break;
+			case 7: x = this.x_coord + 1;
+					y = this.y_coord - 1;
+					break;
+			}
+			for(int i = 0; i < population.size(); i++){
+				if(population.get(i).x_coord == x && population.get(i).y_coord == y){
+					population.get(i).energy = population.get(i).energy - Params.look_energy_cost;
+					return population.get(i).toString();
+				}
+				else{
+					population.get(i).energy = population.get(i).energy - Params.look_energy_cost;
+					return null;
+				}
+			}
+		}
+		else if(steps = true){
+			switch(direction){
+			case 0: x = this.x_coord + 2;
+					y = this.y_coord;
+					break;
+			case 1: x = this.x_coord + 2;
+					y = this.y_coord + 2;
+					break;
+			case 2: x = this.x_coord;
+					y = this.y_coord + 2;
+					break;
+			case 3: x = this.x_coord - 2;
+					y = this.y_coord + 2;
+					break;
+			case 4: x = this.x_coord - 2;
+					y = this.y_coord;
+					break;
+			case 5: x = this.x_coord - 2;
+					y = this.y_coord - 2;
+					break;
+			case 6: x = this.x_coord;
+					y = this.y_coord - 2;
+					break;
+			case 7: x = this.x_coord + 2;
+					y = this.y_coord - 2;
+					break;
+			}
+			for(int i = 0; i < population.size(); i++){
+				if(population.get(i).x_coord == x && population.get(i).y_coord == y){
+					population.get(i).energy = population.get(i).energy - Params.look_energy_cost;
+					return population.get(i).toString();
+				}
+				else{
+					population.get(i).energy = population.get(i).energy - Params.look_energy_cost;
+					return null;
+				}
+			}
+		}
+		return null;
 	}
 	
 	private static java.util.Random rand = new java.util.Random();
