@@ -20,7 +20,7 @@
  * direction by 45 degrees
  * 
  */
-package assignment4;
+package assignment5;
 public class Critter2 extends Critter
 {
 	@Override
@@ -44,7 +44,14 @@ public class Critter2 extends Critter
 		
 	}
 
-	public static void runStats(java.util.List<Critter> crit2) {
-		
+	public static String runStats(java.util.List<Critter> crit4){
+		String out = new String("" + crit4.size() + " Critter4's active");
+		return out;
+	}
+
+	@Override
+	public CritterShape viewShape() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

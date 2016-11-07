@@ -1,6 +1,6 @@
 
 
-package assignment4;
+package assignment5;
 /* CRITTERS Main.java
  * EE422C Project 4 submission by
  * Replace <...> with your actual data.
@@ -57,7 +57,13 @@ public class Critter4 extends Critter{
 			return false;
 		}
 	}
-	public static void runStats(java.util.List<Critter> crit4){
-		System.out.println("" + crit4.size() + " Critter4's active");
+	public static String runStats(java.util.List<Critter> crit4){
+		String out = new String("" + crit4.size() + " Critter4's active");
+		return out;
+	}
+	@Override
+	public CritterShape viewShape() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

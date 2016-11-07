@@ -23,7 +23,7 @@
  * its own
  * runStats prints how many Critter3 objects are alive
  */
-package assignment4;
+package assignment5;
 public class Critter3 extends Critter{
 
 	private int dir;
@@ -56,8 +56,14 @@ public class Critter3 extends Critter{
 			return false;
 		}
 	}
-	public static void runStats(java.util.List<Critter> crit3){
-		System.out.println("" + crit3.size() + " Critter3's active");
+	public static String runStats(java.util.List<Critter> crit3){
+		String out = new String("" + crit3.size() + " Critter3's active");
+		return out;
+	}
+	@Override
+	public CritterShape viewShape() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	

@@ -20,7 +20,7 @@
  * direction by 120 degrees
  * 
  */
-package assignment4;
+package assignment5;
 
 public class Critter1 extends Critter
 {
@@ -42,5 +42,11 @@ public class Critter1 extends Critter
 		/* take one step forward */
 		walk(dir);
 		dir += 3;
+	}
+
+	@Override
+	public CritterShape viewShape() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
