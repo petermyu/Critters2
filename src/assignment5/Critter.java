@@ -16,6 +16,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
+
 /* see the PDF for descriptions of the methods and fields in this class
  * you may add fields, methods or inner classes to Critter ONLY if you make your additions private
  * no new public, protected or default-package code or data can be added to Critter
@@ -43,16 +44,17 @@ public abstract class Critter {
 		public javafx.scene.paint.Color viewFillColor() { return viewColor(); }
 		public abstract CritterShape viewShape();
 		private static String myPackage;
+		public static Board gameBoard = new Board();
 		// Gets the package name.  This assumes that Critter and its subclasses are all in the same package.
 		static {
 		myPackage = Critter.class.getPackage().toString().split(" ")[1];
 		}
-	private	static List<Critter> population = new java.util.ArrayList<Critter>();
+	public static List<Critter> population = new java.util.ArrayList<Critter>();
 	private static List<Critter> babies = new java.util.ArrayList<Critter>();
 	
 
 	// Gets the package name.  This assumes that Critter and its subclasses are all in the same package.
-	protected String look(int direction, boolean steps) {
+/*	protected String look(int direction, boolean steps) {
 		int x = 0;
 		int y = 0;
 		if(steps = false){
@@ -132,7 +134,7 @@ public abstract class Critter {
 			}
 		}
 		return null;
-	}
+	}*/
 	
 	private static java.util.Random rand = new java.util.Random();
 	public static int getRandomInt(int max) {
@@ -151,9 +153,18 @@ public abstract class Critter {
 	private int energy = 0;
 	protected int getEnergy() { return energy; }
 	
-	private int x_coord;
-	private int y_coord;
+	private static int x_coord;
+	private static int y_coord;
 	
+	public int getX(){
+		return this.x_coord;
+	}
+	public int getY(){
+		return this.y_coord;
+	}
+	public static List<Critter> getPop(){
+		return population;
+	}
 	protected final void walk(int direction) {
 		int backDir  = 0;
 		if(moveFlag == false){
