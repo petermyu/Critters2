@@ -595,7 +595,7 @@ public abstract class Critter {
 	public static void displayWorld() {
 		Main.board.getChildren().clear();
 		Main.board.setAlignment(Pos.CENTER);
-		
+		//test
 		for(int j = 0; j<Params.world_height; j++){
 			for(int k = 0; k<Params.world_width;k++){
 				Rectangle blank = new Rectangle();
