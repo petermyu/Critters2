@@ -26,6 +26,7 @@
 package assignment5;
 
 import assignment5.Critter.CritterShape;
+import javafx.scene.paint.Color;
 
 public class Critter3 extends Critter{
 
@@ -60,13 +61,16 @@ public class Critter3 extends Critter{
 		}
 	}
 	public static String runStats(java.util.List<Critter> crit3){
-		String out = new String("" + crit3.size() + " Critter3's active");
+		String out = new String("" + crit3.size() + " Critter's active");
 		return out;
 	}
 	@Override
 	public CritterShape viewShape() {
 		// TODO Auto-generated method stub
 		return CritterShape.TRIANGLE;
+	}
+	public Color viewColor(){
+		return javafx.scene.paint.Color.VIOLET;
 	}
 	
 	

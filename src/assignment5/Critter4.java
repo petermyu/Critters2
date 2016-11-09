@@ -58,7 +58,7 @@ public class Critter4 extends Critter{
 		}
 	}
 	public static String runStats(java.util.List<Critter> crit4){
-		String out = new String("" + crit4.size() + " Critter4's active");
+		String out = new String("" + crit4.size() + " Critter's active");
 		return out;
 	}
 	@Override
