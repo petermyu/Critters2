@@ -13,6 +13,12 @@
 package assignment5; // cannot be in default package
 import java.util.List;
 import java.util.Scanner;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 import com.sun.org.apache.xpath.internal.operations.Equals;
 import assignment5.Critter.CritterShape;
@@ -49,6 +55,7 @@ import java.lang.reflect.InvocationTargetException;
  * May not use 'test' argument without specifying input file.
  */
 public class Main extends Application{
+		public static GridPane board = new GridPane();
 		private static String myPackage;	// package of Critter file.  Critter cannot be in default pkg.
 		static {
 	        myPackage = Critter.class.getPackage().toString().split(" ")[1];
@@ -73,6 +80,7 @@ public class Main extends Application{
 	        Button quit = new Button();
 	        Button seed = new Button();
 	        Button animate = new Button();
+	        Button stop = new Button();
 	        Text text = new Text();
 	        TextField seedNum = new TextField();
 	        TextField critter = new TextField();
@@ -81,14 +89,80 @@ public class Main extends Application{
 	        stats.setText("Stats");
 	        quit.setText("Quit");
 	        seed.setText("Seed");
+	        animate.setText("Animate");
+	        stop.setText("Stop");
 	        timeStep.setOnAction(new EventHandler<ActionEvent>() {
 	        	 
 	            @Override
 	            public void handle(ActionEvent event) {
 	            	Critter.worldTimeStep();
+	            	Critter.displayWorld();
 	            }
 	        });
 	        
+	        animate.setOnAction(new EventHandler<ActionEvent>() {
+	            @Override  
+	            public void handle(ActionEvent event) {
+	            	btn.setDisable(true);
+	            	stats.setDisable(true);
+	            	show.setDisable(true);
+	            	seed.setDisable(true);
+	            	timeStep.setDisable(true);
+	            	Timer t = new Timer();
+	            	//Set the schedule function and rate
+	            	t.scheduleAtFixedRate(new TimerTask() {
+	            	    @Override
+	            	    public void run() {
+	            	        //Called each time when 1000 milliseconds (1 second) (the period parameter)
+	            	    	Critter.worldTimeStep();
+            	    	   Critter.displayWorld();
+            	    	   String input = critter.getText();
+       	        			try{
+	       		        		Class<?> crit = Class.forName(myPackage + "." + input);
+	       		    			Class<?>[] types = {List.class};
+	       		        		List<Critter> list = Critter.getInstances(input);
+	       						text.setText((String) crit.getMethod("runStats", types).invoke(null, list))	;
+       	        			}
+       	        			catch(InvalidCritterException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException | ClassNotFoundException e){
+       	        				text.setText("error");
+       	        			}
+	            	    }
+	            	},
+	            	//Set how long before to start calling the TimerTask (in milliseconds)
+	            	0,
+	            	//Set the amount of time between each execution (in milliseconds)
+	            	5000);
+	            	/*ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+	            	final Runnable animate = new Runnable() {
+	            	       public void run() { 
+	            	    	   Critter.worldTimeStep();
+	            	    	   Critter.displayWorld();
+	            	    	   String input = critter.getText();
+	       	        			try{
+		       		        		Class<?> crit = Class.forName(myPackage + "." + input);
+		       		    			Class<?>[] types = {List.class};
+		       		        		List<Critter> list = Critter.getInstances(input);
+		       						text.setText((String) crit.getMethod("runStats", types).invoke(null, list))	;
+	       	        			}
+	       	        			catch(InvalidCritterException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException | ClassNotFoundException e){
+	       	        				text.setText("error");
+	       	        			}
+	            	       }
+	            	     };
+	            	final ScheduledFuture<?> animateTimer = scheduler.scheduleAtFixedRate(animate, 5, 5, TimeUnit.SECONDS);*/
+	            	
+	            }
+	        });
+	        stop.setOnAction(new EventHandler<ActionEvent>() {
+	            @Override  
+	            public void handle(ActionEvent event) {
+	            	btn.setDisable(false);
+	            	stats.setDisable(false);
+	            	show.setDisable(false);
+	            	seed.setDisable(false);
+	            	timeStep.setDisable(false);
+	            }
+	        });
 	        btn.setOnAction(new EventHandler<ActionEvent>() {
 	        	 
 	            @Override  
@@ -137,69 +211,24 @@ public class Main extends Application{
 	            	}
 	            }
 	        });
+	        
 	        BorderPane border = new BorderPane();
 	        Scene gridScene = new Scene(border, 600, 600);
 	        GridPane grid = new GridPane();
-	        GridPane board = new GridPane();
 	        border.setCenter(board);
 	        border.setRight(grid);
-	        board.setGridLinesVisible(true);
-
+	      
 	        show.setOnAction(new EventHandler<ActionEvent>() {
-	        	
 	            @Override
 	            public void handle(ActionEvent event) {
 	            	Critter.displayWorld();
-	            	board.getChildren().clear();
-	            	for(int i = 0;i<Critter.getPop().size();i++){
-	            		board.setAlignment(Pos.CENTER);
-	    	        	int x = Critter.population.get(i).getX();
-	    				int y = Critter.population.get(i).getY();
-	    				System.out.println(Critter.getPop().size());
-	    				System.out.println("(" + i + ")" + x + ", " + y);
-	    				CritterShape shape = Critter.getPop().get(i).viewShape();
-	    				switch(shape){
-	    				case TRIANGLE: 
-	    					Polygon crit = new Polygon();
-	    					crit.getPoints().addAll(new Double[]{
-	    						    10.0, 0.0,
-	    						    20.0, 10.0,
-	    						    10.0, 20.0 });
-	    					crit.setFill(Critter.population.get(i).viewColor());
-	    					board.add(crit, x, y);
-	    					break;
-	    				case SQUARE:
-	    					Polygon crit1 = new Polygon();
-	    					crit1.getPoints().addAll(new Double[]{
-	    						    0.0, 0.0,
-	    						    20.0, 0.0,
-	    						    20.0, 20.0,
-	    						    0.0, 20.0});
-	    					crit1.setFill(Critter.population.get(i).viewColor());
-	    					board.add(crit1, x, y);
-	    					break;
-	    				
-	    				case DIAMOND:
-	    					Polygon crit2 = new Polygon();
-	    					crit2.getPoints().addAll(new Double[]{
-	    						    10.0, 0.0,
-	    						    20.0, 10.0,
-	    						    0.0, 10.0,
-	    						    10.0, 20.0});
-	    					crit2.setFill(Critter.population.get(i).viewColor());
-	    					board.add(crit2, x, y);
-	    					break;
-	    				case CIRCLE:
-	    					Circle crit3 = new Circle();
-	    					crit3.setFill(Critter.population.get(i).viewColor());
-	    					board.add(crit3, x, y);
-	    					break;
-	    				}
-	    			
-	    	        }
+	            	
 	            }
 	        });
 	        
+	        board.setGridLinesVisible(true);
+	        board.setMaxHeight(Params.world_height);
+	        board.setMaxWidth(Params.world_width);
 	        grid.add(btn, 0, 0);
 	        grid.add(critter,1, 0);
 	        grid.add(show, 0, 3);
@@ -207,7 +236,10 @@ public class Main extends Application{
 	        grid.add(text, 1, 4);
 	        grid.add(seed, 0, 5);
 	        grid.add(seedNum, 1,5);
-	        grid.add(quit, 0, 6);
+	        grid.add(animate, 0, 6);
+	        grid.add(stop,1,6);
+	        grid.add(timeStep, 0, 7);
+	        grid.add(quit, 0, 8);
 
 	        
 	    	//primaryStage.setScene(s);
