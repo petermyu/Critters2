@@ -54,7 +54,7 @@ public abstract class Critter {
 	
 
 	// Gets the package name.  This assumes that Critter and its subclasses are all in the same package.
-/*	protected String look(int direction, boolean steps) {
+	protected String look(int direction, boolean steps) {
 		int x = 0;
 		int y = 0;
 		if(steps = false){
@@ -134,7 +134,7 @@ public abstract class Critter {
 			}
 		}
 		return null;
-	}*/
+	}
 	
 	private static java.util.Random rand = new java.util.Random();
 	public static int getRandomInt(int max) {
