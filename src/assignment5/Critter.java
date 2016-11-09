@@ -16,6 +16,13 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
+import assignment5.Critter.CritterShape;
+import javafx.geometry.Pos;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Polygon;
+import javafx.scene.shape.Rectangle;
+
 
 /* see the PDF for descriptions of the methods and fields in this class
  * you may add fields, methods or inner classes to Critter ONLY if you make your additions private
@@ -49,7 +56,7 @@ public abstract class Critter {
 		static {
 		myPackage = Critter.class.getPackage().toString().split(" ")[1];
 		}
-	public static List<Critter> population = new java.util.ArrayList<Critter>();
+	private static List<Critter> population = new java.util.ArrayList<Critter>();
 	private static List<Critter> babies = new java.util.ArrayList<Critter>();
 	public static List<Critter> newPopulation = new java.util.ArrayList<Critter>();
 	
@@ -586,39 +593,57 @@ public abstract class Critter {
 		}
 	
 	public static void displayWorld() {
-		int width = Params.world_width+2;
-		int height = Params.world_height+2;
+		Main.board.getChildren().clear();
+		Main.board.setAlignment(Pos.CENTER);
 		
-		String[][] graph = new String[width][height];
-		//create graph borders
-		graph[0][0] ="+";
-		graph[0][height-1]= "+";
-		graph[width-1][0]="+";
-		graph[width-1][height-1] = "+";
-		for(int i = 1;i<width-1;i++){
-			graph[i][0] = "|";
-			graph[i][height-1] = "|";
-		}
-		for(int i = 1;i<height-1;i++){
-			graph[0][i] = "-";
-			graph[width-1][i] = "-";
-		}
-		//insert Critters into graph
-		for(int i = 0;i<Critter.population.size();i++){
-			int x = Critter.population.get(i).x_coord+1;
-			int y = Critter.population.get(i).y_coord+1;
-			graph[x][y] = Critter.population.get(i).toString();
-		}
-		
-		for(int i = 0;i<width;i++){
-			for(int j = 0;j<height;j++){
-				if(graph[i][j]==null){
-					graph[i][j] = " ";
-				}
-				System.out.print(graph[i][j]);
+		for(int j = 0; j<Params.world_height; j++){
+			for(int k = 0; k<Params.world_width;k++){
+				Rectangle blank = new Rectangle();
+				blank.setWidth(10);
+				blank.setHeight(10);
+				blank.fillProperty().set(Color.WHITE);
+				Main.board.add(blank, j, k);
 			}
-			System.out.println();
 		}
-
+    	for(int i = 0;i<Critter.population.size();i++){
+        	int x = Critter.population.get(i).getX();
+			int y = Critter.population.get(i).getY();
+			CritterShape shape = Critter.population.get(i).viewShape();
+			switch(shape){
+			case TRIANGLE: 
+				Polygon crit = new Polygon();
+				crit.getPoints().addAll(new Double[]{
+					    10.0, 0.0,
+					    20.0, 10.0,
+					    10.0, 20.0 });
+				crit.setFill(Critter.population.get(i).viewColor());
+				Main.board.add(crit, x, y);
+				break;
+			case SQUARE:
+				Rectangle crit1 = new Rectangle();
+				crit1.setHeight(10);
+				crit1.setWidth(10);
+				crit1.setFill(Critter.population.get(i).viewColor());
+				Main.board.add(crit1, x, y);
+				break;
+			
+			case DIAMOND:
+				Polygon crit2 = new Polygon();
+				crit2.getPoints().addAll(new Double[]{
+					    10.0, 0.0,
+					    20.0, 10.0,
+					    0.0, 10.0,
+					    10.0, 20.0});
+				crit2.setFill(Critter.population.get(i).viewColor());
+				Main.board.add(crit2, x, y);
+				break;
+			case CIRCLE:
+				Circle crit3 = new Circle();
+				crit3.setFill(Critter.population.get(i).viewColor());
+				Main.board.add(crit3, x, y);
+				break;
+			}
+		
+        }
 	}
 }

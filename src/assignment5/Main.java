@@ -49,6 +49,7 @@ import java.lang.reflect.InvocationTargetException;
  * May not use 'test' argument without specifying input file.
  */
 public class Main extends Application{
+		public static GridPane board = new GridPane();
 		private static String myPackage;	// package of Critter file.  Critter cannot be in default pkg.
 		static {
 	        myPackage = Critter.class.getPackage().toString().split(" ")[1];
@@ -137,69 +138,22 @@ public class Main extends Application{
 	            	}
 	            }
 	        });
+	       
 	        BorderPane border = new BorderPane();
 	        Scene gridScene = new Scene(border, 600, 600);
 	        GridPane grid = new GridPane();
-	        GridPane board = new GridPane();
 	        border.setCenter(board);
 	        border.setRight(grid);
-	        board.setGridLinesVisible(true);
-
+	      
 	        show.setOnAction(new EventHandler<ActionEvent>() {
-	        	
 	            @Override
 	            public void handle(ActionEvent event) {
 	            	Critter.displayWorld();
-	            	board.getChildren().clear();
-	            	for(int i = 0;i<Critter.getPop().size();i++){
-	            		board.setAlignment(Pos.CENTER);
-	    	        	int x = Critter.population.get(i).getX();
-	    				int y = Critter.population.get(i).getY();
-	    				System.out.println(Critter.getPop().size());
-	    				System.out.println("(" + i + ")" + x + ", " + y);
-	    				CritterShape shape = Critter.getPop().get(i).viewShape();
-	    				switch(shape){
-	    				case TRIANGLE: 
-	    					Polygon crit = new Polygon();
-	    					crit.getPoints().addAll(new Double[]{
-	    						    10.0, 0.0,
-	    						    20.0, 10.0,
-	    						    10.0, 20.0 });
-	    					crit.setFill(Critter.population.get(i).viewColor());
-	    					board.add(crit, x, y);
-	    					break;
-	    				case SQUARE:
-	    					Polygon crit1 = new Polygon();
-	    					crit1.getPoints().addAll(new Double[]{
-	    						    0.0, 0.0,
-	    						    20.0, 0.0,
-	    						    20.0, 20.0,
-	    						    0.0, 20.0});
-	    					crit1.setFill(Critter.population.get(i).viewColor());
-	    					board.add(crit1, x, y);
-	    					break;
-	    				
-	    				case DIAMOND:
-	    					Polygon crit2 = new Polygon();
-	    					crit2.getPoints().addAll(new Double[]{
-	    						    10.0, 0.0,
-	    						    20.0, 10.0,
-	    						    0.0, 10.0,
-	    						    10.0, 20.0});
-	    					crit2.setFill(Critter.population.get(i).viewColor());
-	    					board.add(crit2, x, y);
-	    					break;
-	    				case CIRCLE:
-	    					Circle crit3 = new Circle();
-	    					crit3.setFill(Critter.population.get(i).viewColor());
-	    					board.add(crit3, x, y);
-	    					break;
-	    				}
-	    			
-	    	        }
+	            	
 	            }
 	        });
 	        
+	        board.setGridLinesVisible(true);
 	        grid.add(btn, 0, 0);
 	        grid.add(critter,1, 0);
 	        grid.add(show, 0, 3);
