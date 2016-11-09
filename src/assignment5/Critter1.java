@@ -47,6 +47,6 @@ public class Critter1 extends Critter
 	@Override
 	public CritterShape viewShape() {
 		// TODO Auto-generated method stub
-		return null;
+		return CritterShape.DIAMOND;
 	}
 }

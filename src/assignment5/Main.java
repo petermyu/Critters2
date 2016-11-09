@@ -144,6 +144,7 @@ public class Main extends Application{
 	            	Critter.displayWorld();
 	            	board.getChildren().clear();
 	            	for(int i = 0;i<Critter.getPop().size();i++){
+	            		board.setAlignment(Pos.CENTER);
 	    	        	int x = Critter.population.get(i).getX();
 	    				int y = Critter.population.get(i).getY();
 	    				System.out.println(Critter.getPop().size());
