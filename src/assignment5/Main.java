@@ -182,6 +182,7 @@ public class Main extends Application{
 	    					board.add(crit3, x, y);
 	    					break;
 	    				}
+	    				
 	    	        }
 	            }
 	        });

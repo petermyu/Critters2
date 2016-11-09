@@ -44,17 +44,18 @@ public abstract class Critter {
 		public javafx.scene.paint.Color viewFillColor() { return viewColor(); }
 		public abstract CritterShape viewShape();
 		private static String myPackage;
-		public static Board gameBoard = new Board();
+		//public static Board gameBoard = new Board();
 		// Gets the package name.  This assumes that Critter and its subclasses are all in the same package.
 		static {
 		myPackage = Critter.class.getPackage().toString().split(" ")[1];
 		}
 	public static List<Critter> population = new java.util.ArrayList<Critter>();
 	private static List<Critter> babies = new java.util.ArrayList<Critter>();
+	public static List<Critter> newPopulation = new java.util.ArrayList<Critter>();
 	
 
 	// Gets the package name.  This assumes that Critter and its subclasses are all in the same package.
-/*	protected String look(int direction, boolean steps) {
+	protected String look(int direction, boolean steps) {
 		int x = 0;
 		int y = 0;
 		if(steps = false){
@@ -134,7 +135,7 @@ public abstract class Critter {
 			}
 		}
 		return null;
-	}*/
+	}
 	
 	private static java.util.Random rand = new java.util.Random();
 	public static int getRandomInt(int max) {
@@ -153,13 +154,13 @@ public abstract class Critter {
 	private int energy = 0;
 	protected int getEnergy() { return energy; }
 	
-	private static int x_coord;
-	private static int y_coord;
+	private int x_coord;
+	private int y_coord;
 	
-	public int getX(){
+	protected int getX(){
 		return this.x_coord;
 	}
-	public int getY(){
+	protected int getY(){
 		return this.y_coord;
 	}
 	public static List<Critter> getPop(){
@@ -363,7 +364,7 @@ public abstract class Critter {
 		try {
 			Class<?> critClass = Class.forName(myPackage+"."+critter_class_name);
 			Constructor<?> newConstructor = critClass.getConstructor();
-			Object crit = newConstructor.newInstance();
+			Critter crit = (Critter) newConstructor.newInstance();
 			Critter newCrit = (Critter) crit;
 			((Critter) newCrit).energy = Params.start_energy;
 			((Critter) newCrit).x_coord = getRandomInt(Params.world_width);
@@ -391,7 +392,6 @@ public abstract class Critter {
 			} catch (InvocationTargetException e) {
 				throw new InvalidCritterException(critter_class_name);
 			}
-			
 		}
 	
 		
@@ -519,9 +519,11 @@ public abstract class Critter {
 	public static void worldTimeStep() {								// all calls to critters list will probably be change to population list
 		int energyA = 0;
 		int energyB = 0;
+		newPopulation = population;
 			for(int i = 0; i < population.size(); i++) {
 				population.get(i).doTimeStep();
 			}
+			population = newPopulation;
 			for(int j = 0; j < population.size()-1; j++){					// nested for loop for checking critters in same spot(encounter)
 				for(int k = j+1; k < population.size(); k++){
 					if((population.get(j).x_coord == population.get(k).x_coord) && (population.get(j).y_coord == population.get(k).y_coord)  ){
@@ -545,10 +547,14 @@ public abstract class Critter {
 								if(energyA >= energyB){				//Critter A wins
 									population.get(j).energy = population.get(j).energy + (population.get(k).energy/2);
 									population.remove(k);
+									j = 0;
+									break;
 								}
 								else{								//Critter B wins
 									population.get(k).energy = population.get(k).energy + (population.get(j).energy/2);
 									population.remove(j);
+									j = 0;
+									break;
 								}
 							}
 						}
