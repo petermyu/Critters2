@@ -45,6 +45,7 @@ public class Critter1 extends Critter
 		look(2, false);
 		walk(dir);
 		dir += 3;
+		dir = dir%8;
 	}
 
 	@Override
