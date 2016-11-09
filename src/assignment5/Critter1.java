@@ -22,6 +22,8 @@
  */
 package assignment5;
 
+import javafx.scene.paint.Color;
+
 public class Critter1 extends Critter
 {
 	@Override
@@ -40,6 +42,7 @@ public class Critter1 extends Critter
 	@Override
 	public void doTimeStep() {
 		/* take one step forward */
+		look(2, false);
 		walk(dir);
 		dir += 3;
 	}
@@ -48,5 +51,9 @@ public class Critter1 extends Critter
 	public CritterShape viewShape() {
 		// TODO Auto-generated method stub
 		return CritterShape.DIAMOND;
+	}
+	@Override
+	public Color viewColor(){
+		return javafx.scene.paint.Color.AQUAMARINE;
 	}
 }

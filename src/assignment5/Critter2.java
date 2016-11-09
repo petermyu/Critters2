@@ -21,6 +21,9 @@
  * 
  */
 package assignment5;
+
+import javafx.scene.paint.Color;
+
 public class Critter2 extends Critter
 {
 	@Override
@@ -32,7 +35,7 @@ public class Critter2 extends Critter
 	}
 	
 	public boolean fight(String not_used) { 
-		
+		look(5, true);
 		return true;
 	}
 
@@ -53,5 +56,10 @@ public class Critter2 extends Critter
 	public CritterShape viewShape() {
 		// TODO Auto-generated method stub
 		return CritterShape.SQUARE;
+	}
+	
+	@Override
+	public Color viewColor(){
+		return javafx.scene.paint.Color.LIGHTGREEN;
 	}
 }

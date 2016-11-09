@@ -24,6 +24,9 @@
  * runStats prints how many Critter3 objects are alive
  */
 package assignment5;
+
+import assignment5.Critter.CritterShape;
+
 public class Critter3 extends Critter{
 
 	private int dir;
@@ -63,7 +66,7 @@ public class Critter3 extends Critter{
 	@Override
 	public CritterShape viewShape() {
 		// TODO Auto-generated method stub
-		return null;
+		return CritterShape.TRIANGLE;
 	}
 	
 	

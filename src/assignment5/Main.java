@@ -81,9 +81,17 @@ public class Main extends Application{
 	        stats.setText("Stats");
 	        quit.setText("Quit");
 	        seed.setText("Seed");
-	        btn.setOnAction(new EventHandler<ActionEvent>() {
+	        timeStep.setOnAction(new EventHandler<ActionEvent>() {
 	        	 
 	            @Override
+	            public void handle(ActionEvent event) {
+	            	Critter.worldTimeStep();
+	            }
+	        });
+	        
+	        btn.setOnAction(new EventHandler<ActionEvent>() {
+	        	 
+	            @Override  
 	            public void handle(ActionEvent event) {
 	                String input = (String) critter.getText();
 	                System.out.println(input);
@@ -154,9 +162,10 @@ public class Main extends Application{
 	    				case TRIANGLE: 
 	    					Polygon crit = new Polygon();
 	    					crit.getPoints().addAll(new Double[]{
-	    						    0.0, 0.0,
+	    						    10.0, 0.0,
 	    						    20.0, 10.0,
 	    						    10.0, 20.0 });
+	    					crit.setFill(Critter.population.get(i).viewColor());
 	    					board.add(crit, x, y);
 	    					break;
 	    				case SQUARE:
@@ -164,8 +173,9 @@ public class Main extends Application{
 	    					crit1.getPoints().addAll(new Double[]{
 	    						    0.0, 0.0,
 	    						    20.0, 0.0,
-	    						    0.0, 20.0,
-	    						    20.0, 20.0});
+	    						    20.0, 20.0,
+	    						    0.0, 20.0});
+	    					crit1.setFill(Critter.population.get(i).viewColor());
 	    					board.add(crit1, x, y);
 	    					break;
 	    				
@@ -176,14 +186,16 @@ public class Main extends Application{
 	    						    20.0, 10.0,
 	    						    0.0, 10.0,
 	    						    10.0, 20.0});
+	    					crit2.setFill(Critter.population.get(i).viewColor());
 	    					board.add(crit2, x, y);
 	    					break;
 	    				case CIRCLE:
 	    					Circle crit3 = new Circle();
+	    					crit3.setFill(Critter.population.get(i).viewColor());
 	    					board.add(crit3, x, y);
 	    					break;
 	    				}
-	    				
+	    			
 	    	        }
 	            }
 	        });

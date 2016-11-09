@@ -64,6 +64,6 @@ public class Critter4 extends Critter{
 	@Override
 	public CritterShape viewShape() {
 		// TODO Auto-generated method stub
-		return null;
+		return CritterShape.CIRCLE;
 	}
 }
