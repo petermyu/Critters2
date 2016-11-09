@@ -602,13 +602,15 @@ public abstract class Critter {
 				blank.setWidth(10);
 				blank.setHeight(10);
 				blank.fillProperty().set(Color.WHITE);
-				Main.board.add(blank, j, k);
+				blank.setStroke(Color.BLACK);
+				Main.board.add(blank, k, j);
 			}
 		}
     	for(int i = 0;i<Critter.population.size();i++){
         	int x = Critter.population.get(i).getX();
 			int y = Critter.population.get(i).getY();
 			CritterShape shape = Critter.population.get(i).viewShape();
+			System.out.println(x+ " , " + y);
 			switch(shape){
 			case TRIANGLE: 
 				Polygon crit = new Polygon();
@@ -617,6 +619,7 @@ public abstract class Critter {
 					    20.0, 10.0,
 					    10.0, 20.0 });
 				crit.setFill(Critter.population.get(i).viewColor());
+				crit.setStroke(Color.BLACK);
 				Main.board.add(crit, x, y);
 				break;
 			case SQUARE:
@@ -624,6 +627,7 @@ public abstract class Critter {
 				crit1.setHeight(10);
 				crit1.setWidth(10);
 				crit1.setFill(Critter.population.get(i).viewColor());
+				crit1.setStroke(Color.BLACK);
 				Main.board.add(crit1, x, y);
 				break;
 			
@@ -635,6 +639,7 @@ public abstract class Critter {
 					    0.0, 10.0,
 					    10.0, 20.0});
 				crit2.setFill(Critter.population.get(i).viewColor());
+				crit2.setStroke(Color.BLACK);
 				Main.board.add(crit2, x, y);
 				break;
 			case CIRCLE:
