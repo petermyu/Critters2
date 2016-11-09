@@ -44,6 +44,7 @@ public class Critter2 extends Critter
 		/* take one step forward */
 		walk(dir);
 		dir += 1;
+		dir = dir%8;
 		
 	}
 

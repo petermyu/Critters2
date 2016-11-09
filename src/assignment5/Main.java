@@ -37,6 +37,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.ScrollBar;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
@@ -82,8 +83,13 @@ public class Main extends Application{
 	        Button animate = new Button();
 	        Button stop = new Button();
 	        Text text = new Text();
+	        Text makeCrit = new Text();
+	        Text numCrit = new Text();
 	        TextField seedNum = new TextField();
 	        TextField critter = new TextField();
+	        TextField steps = new TextField();
+	        TextField numCrits = new TextField();
+	        steps.setText("0");
 	        btn.setText("Make");
 	        show.setText("Show");
 	        stats.setText("Stats");
@@ -91,12 +97,21 @@ public class Main extends Application{
 	        seed.setText("Seed");
 	        animate.setText("Animate");
 	        stop.setText("Stop");
+	        timeStep.setText("Step");
+	        makeCrit.setText("Critter Name:");
+	        numCrit.setText("Number of Critters:");
 	        timeStep.setOnAction(new EventHandler<ActionEvent>() {
 	        	 
 	            @Override
 	            public void handle(ActionEvent event) {
-	            	Critter.worldTimeStep();
-	            	Critter.displayWorld();
+	            	int i = 0;
+	            	int st = Integer.parseInt(steps.getText());
+	            	
+	            	while(i < st){
+		            	Critter.worldTimeStep();
+		            	Critter.displayWorld();
+		            	i++;
+	            	}
 	            }
 	        });
 	        
@@ -229,8 +244,14 @@ public class Main extends Application{
 	        board.setGridLinesVisible(true);
 	        board.setMaxHeight(Params.world_height);
 	        board.setMaxWidth(Params.world_width);
+	        grid.getColumnConstraints().add(new ColumnConstraints(100));
+	        grid.getColumnConstraints().add(new ColumnConstraints(150));
 	        grid.add(btn, 0, 0);
-	        grid.add(critter,1, 0);
+	        grid.add(makeCrit,1, 0);
+	        grid.add(critter,2, 0);
+	        grid.add(numCrit, 1	, 1);
+	        
+	        grid.add(numCrits,2,1);
 	        grid.add(show, 0, 3);
 	        grid.add(stats,0, 4);
 	        grid.add(text, 1, 4);
@@ -239,8 +260,8 @@ public class Main extends Application{
 	        grid.add(animate, 0, 6);
 	        grid.add(stop,1,6);
 	        grid.add(timeStep, 0, 7);
+	        grid.add(steps, 1, 7);
 	        grid.add(quit, 0, 8);
-
 	        
 	    	//primaryStage.setScene(s);
 	        primaryStage.setScene(gridScene);
