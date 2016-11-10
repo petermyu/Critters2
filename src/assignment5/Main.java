@@ -30,6 +30,7 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.ScheduledService;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -42,9 +43,11 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -73,7 +76,7 @@ public class Main extends Application{
 	    @Override
 	    public void start(Stage primaryStage) {
 	    	Critter.displayWorld();
-	        primaryStage.setTitle("Critter2");
+	        primaryStage.setTitle("Critter2 - Project5");
 	        Button btn = new Button();
 	        Button show = new Button();
 	        Button stats = new Button();
@@ -82,7 +85,9 @@ public class Main extends Application{
 	        Button seed = new Button();
 	        Button animate = new Button();
 	        Button stop = new Button();
+	        Button clear = new Button();
 	        Text text = new Text();
+	        Text controls = new Text();
 	        Text makeCrit = new Text();
 	        Text numCrit = new Text();
 	        TextField seedNum = new TextField();
@@ -90,12 +95,19 @@ public class Main extends Application{
 	        TextField steps = new TextField();
 	        TextField numCrits = new TextField();
 	        critter.setMaxWidth(100);
+	        clear.setMaxWidth(150);
 	        numCrits.setMaxWidth(100);
 	        btn.setMaxWidth(150);
 	        steps.setMaxWidth(150);
+	        stop.setMaxWidth(150);
+	        timeStep.setMaxWidth(150);
 	        show.setMaxWidth(150);
 	        stats.setMaxWidth(150);
+	        seed.setMaxWidth(150);
+	        animate.setMaxWidth(150);
+	        quit.setMaxWidth(150);
 	        steps.setText("0");
+	        clear.setText("Clear");
 	        btn.setText("Make");
 	        show.setText("Show");
 	        stats.setText("Stats");
@@ -109,6 +121,8 @@ public class Main extends Application{
 	        critter.setText("Critter1");
 	        steps.setText("1");
 	        numCrits.setText("1");
+	        controls.setText("Controls");
+	        controls.setFont(new Font(40));
 	        timeStep.setOnAction(new EventHandler<ActionEvent>() {
 	            @Override
 	            public void handle(ActionEvent event) {
@@ -122,7 +136,14 @@ public class Main extends Application{
 	            	}
 	            }
 	        });
-	        
+	        clear.setOnAction(new EventHandler<ActionEvent>() {
+	            @Override
+	            public void handle(ActionEvent event) {
+	            	board.getChildren().clear();
+	            	Critter.getPop().clear();
+	            	Critter.displayWorld();
+	            }
+	        });
 	        animate.setOnAction(new EventHandler<ActionEvent>() {
 	            @Override  
 	            public void handle(ActionEvent event) {
@@ -137,7 +158,7 @@ public class Main extends Application{
 	        		    	public void run() {
 	        		    		System.out.println("animate");
 	        		    		Critter.worldTimeStep();
-	        		    	//	Critter.displayWorld();
+	        		    		Critter.displayWorld();
 	        		    		String input = critter.getText();
 	        	        		try{
 	        		        		Class<?> crit = Class.forName(myPackage + "." + input);
@@ -150,7 +171,7 @@ public class Main extends Application{
 	        	        		}
 	        		    	}
 	        		     };
-	        		     handler = scheduler.scheduleAtFixedRate(beeper, 2,2, TimeUnit.SECONDS);
+	        		     handler = scheduler.scheduleAtFixedRate(beeper, 1,10, TimeUnit.SECONDS);
 	            
 	            }
 	        });
@@ -170,12 +191,16 @@ public class Main extends Application{
 	            @Override  
 	            public void handle(ActionEvent event) {
 	                String input = (String) critter.getText();
-	                System.out.println(input);
-	                try {
-	        			Critter.makeCritter(input);
-	        		} catch (InvalidCritterException e) {
-	        			System.out.println("err");
-	        		}
+	                int count = Integer.parseInt(numCrits.getText());
+	                while(count >0){
+	                
+		                try {
+		        			Critter.makeCritter(input);
+		        		} catch (InvalidCritterException e) {
+		        			System.out.println("err");
+		        		}
+	                count--;
+	                }
 	            }
 	        });
 	        stats.setOnAction(new EventHandler<ActionEvent>(){
@@ -215,32 +240,11 @@ public class Main extends Application{
 	        });
 	        
 	        BorderPane border = new BorderPane();
-	        int window_height;
-	        int window_width;
-	        
-	        if(Params.world_height < 50){
-	        	window_height = 500;
-	        }
-	        else if(Params.world_height > 100){
-	        	window_height = 700;
-	        }
-	        else{
-	        	window_height = Params.world_height*20;
-	        }
-	        
-	        if(Params.world_width < 50){
-	        	window_width = 1000;
-	        }
-	        else if(Params.world_width > 100){
-	        	window_width = 700;
-	        }
-	        else{
-	        	window_width = Params.world_width*10;
-	        }
-	        Scene gridScene = new Scene(border, window_width,window_height);
+	        Scene gridScene = new Scene(border, 500, 500);
 	        GridPane grid = new GridPane();
 	        border.setCenter(board);
 	        border.setRight(grid);
+	        border.setMargin(board, new Insets(2));
 	      
 	        show.setOnAction(new EventHandler<ActionEvent>() {
 	            @Override
@@ -253,25 +257,31 @@ public class Main extends Application{
 	        board.setGridLinesVisible(true);
 	        board.setMaxHeight(Params.world_height);
 	        board.setMaxWidth(Params.world_width);
-	        grid.getColumnConstraints().add(new ColumnConstraints(100));
 	        grid.getColumnConstraints().add(new ColumnConstraints(150));
-	        grid.add(btn, 0, 0);
-	        grid.add(makeCrit,1, 0);
-	        grid.add(critter,2, 0);
-	        grid.add(numCrit, 1	, 1);
-	        
-	        grid.add(numCrits,2,1);
-	        grid.add(show, 0, 3);
-	        grid.add(stats,0, 4);
-	        grid.add(text, 1, 4);
-	        grid.add(seed, 0, 5);
-	        grid.add(seedNum, 1,5);
-	        grid.add(animate, 0, 6);
-	        grid.add(stop,1,6);
-	        grid.add(timeStep, 0, 7);
-	        grid.add(steps, 1, 7);
-	        grid.add(quit, 0, 8);
+	        grid.getColumnConstraints().add(new ColumnConstraints(150));
+	        grid.getColumnConstraints().add(new ColumnConstraints(100));
+	        grid.getColumnConstraints().add(new ColumnConstraints(20));
+	        grid.getRowConstraints().add(new RowConstraints(50));
+	        grid.add(btn, 0, 1);
+	        grid.add(makeCrit,1, 1);
+	        grid.add(critter,2, 1);
+	        grid.add(numCrit, 1	, 2);
+	        grid.add(controls, 0, 0);
+	        grid.add(numCrits,2,2);
+	        grid.add(show, 0, 4);
+	        grid.add(stats,0, 5);
+	        grid.add(text, 1, 5);
+	        grid.add(seed, 0, 6);
+	        grid.add(seedNum, 1,6);
+	        grid.add(animate, 0, 7);
+	        grid.add(stop,1,7);
+	        grid.add(timeStep, 0, 8);
+	        grid.add(steps, 1, 8);
+	        grid.add(clear, 0, 9);
+	        grid.add(quit, 0, 10);
 	    	//primaryStage.setScene(s);
+	        primaryStage.setWidth(1500);
+	        primaryStage.setHeight(1000);
 	        primaryStage.setScene(gridScene);
 	        primaryStage.show();
 	    }

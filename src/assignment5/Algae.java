@@ -18,6 +18,6 @@ public class Algae extends TestCritter {
 	}
 	@Override
 	public Color viewColor(){
-		return Color.DARKBLUE;
+		return Color.DARKGREEN;
 	}
 }

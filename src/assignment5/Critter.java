@@ -374,6 +374,18 @@ public abstract class Critter {
 				offspring.x_coord = this.x_coord++;
 				break;
 		}
+		if(this.x_coord >= Params.world_width){
+			this.x_coord = this.x_coord - (Params.world_width);
+		}
+		if(this.x_coord < 0){
+			this.x_coord = this.x_coord + (Params.world_width);
+		}
+		if(this.y_coord >= Params.world_height){
+			this.y_coord = this.y_coord - (Params.world_height);
+		}
+		if(this.y_coord < 0){
+			this.y_coord = this.y_coord + (Params.world_height);
+		}
 		babies.add(offspring);
 	}
 
@@ -616,24 +628,29 @@ public abstract class Critter {
 		}
 	
 	public static void displayWorld() {
-		Main.board.getChildren().clear();
+	//	Main.board.getChildren().clear();
 		Main.board.setAlignment(Pos.CENTER);
 		//test
+		int containerWidth;
+		
+		int size = (int) Math.ceil(Math.sqrt(Params.world_height*Params.world_width));
+		int scaledSquare = 800/size;
 		for(int j = 0; j<Params.world_height; j++){
 			for(int k = 0; k<Params.world_width;k++){
+				
 				Rectangle blank = new Rectangle();
-				blank.setWidth(10);
-				blank.setHeight(10);
+				blank.setWidth(scaledSquare);
+				blank.setHeight(scaledSquare);
 				blank.fillProperty().set(Color.WHITE);
 				blank.setStroke(Color.BLACK);
 				Main.board.add(blank, k, j);
 			}
 		}
     	for(int i = 0;i<Critter.population.size();i++){
+    		
         	int x = Critter.population.get(i).getX();
 			int y = Critter.population.get(i).getY();
 			CritterShape shape = Critter.population.get(i).viewShape();
-			System.out.println(x+ " , " + y);
 			switch(shape){
 			case TRIANGLE: 
 				Polygon crit = new Polygon();
@@ -647,8 +664,8 @@ public abstract class Critter {
 				break;
 			case SQUARE:
 				Rectangle crit1 = new Rectangle();
-				crit1.setHeight(10);
-				crit1.setWidth(10);
+				crit1.setHeight(scaledSquare);
+				crit1.setWidth(scaledSquare);
 				crit1.setFill(Critter.population.get(i).viewColor());
 				crit1.setStroke(Color.BLACK);
 				Main.board.add(crit1, x, y);

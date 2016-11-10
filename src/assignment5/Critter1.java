@@ -55,7 +55,7 @@ public class Critter1 extends Critter
 	}
 	@Override
 	public Color viewColor(){
-		return javafx.scene.paint.Color.AQUAMARINE;
+		return javafx.scene.paint.Color.BLUE;
 	}
 	public static String runStats(java.util.List<Critter> crit4){
 		String out = new String("" + crit4.size() + " Critter's active");

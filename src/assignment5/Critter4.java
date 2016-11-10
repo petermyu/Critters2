@@ -1,6 +1,9 @@
 
 
 package assignment5;
+
+import javafx.scene.paint.Color;
+
 /* CRITTERS Main.java
  * EE422C Project 4 submission by
  * Replace <...> with your actual data.
@@ -64,6 +67,10 @@ public class Critter4 extends Critter{
 	@Override
 	public CritterShape viewShape() {
 		// TODO Auto-generated method stub
-		return CritterShape.CIRCLE;
+		return CritterShape.SQUARE;
+	}
+	@Override
+	public Color viewColor(){
+		return Color.PURPLE;	
 	}
 }
