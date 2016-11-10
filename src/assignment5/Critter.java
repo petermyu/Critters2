@@ -634,7 +634,8 @@ public abstract class Critter {
 		int containerWidth;
 		
 		int size = (int) Math.ceil(Math.sqrt(Params.world_height*Params.world_width));
-		int scaledSquare = 800/size;
+		double scaledSquare = 800/size;
+		double starpoints = scaledSquare*.8;
 		for(int j = 0; j<Params.world_height; j++){
 			for(int k = 0; k<Params.world_width;k++){
 				
@@ -643,6 +644,7 @@ public abstract class Critter {
 				blank.setHeight(scaledSquare);
 				blank.fillProperty().set(Color.WHITE);
 				blank.setStroke(Color.BLACK);
+				blank.setStrokeWidth(.1);
 				Main.board.add(blank, k, j);
 			}
 		}
@@ -655,9 +657,9 @@ public abstract class Critter {
 			case TRIANGLE: 
 				Polygon crit = new Polygon();
 				crit.getPoints().addAll(new Double[]{
-					    10.0, 0.0,
-					    20.0, 10.0,
-					    10.0, 20.0 });
+						scaledSquare*.1, scaledSquare*.1,
+						scaledSquare*.9, scaledSquare*.1,
+						scaledSquare/2, scaledSquare*.9});
 				crit.setFill(Critter.population.get(i).viewColor());
 				crit.setStroke(Color.BLACK);
 				Main.board.add(crit, x, y);
@@ -674,10 +676,11 @@ public abstract class Critter {
 			case DIAMOND:
 				Polygon crit2 = new Polygon();
 				crit2.getPoints().addAll(new Double[]{
-					    10.0, 0.0,
-					    20.0, 10.0,
-					    0.0, 10.0,
-					    10.0, 20.0});
+						scaledSquare*.1, scaledSquare/2,
+						scaledSquare/2, scaledSquare*.1,
+						scaledSquare*.9, scaledSquare/2,
+						scaledSquare/2,scaledSquare*.9
+						});
 				crit2.setFill(Critter.population.get(i).viewColor());
 				crit2.setStroke(Color.BLACK);
 				Main.board.add(crit2, x, y);
@@ -685,9 +688,29 @@ public abstract class Critter {
 			case CIRCLE:
 				Circle crit3 = new Circle();
 				crit3.setFill(Critter.population.get(i).viewColor());
+				crit3.setRadius(scaledSquare*.9/2);
 				Main.board.add(crit3, x, y);
 				break;
+			case STAR:
+				Polygon crit4 = new Polygon();
+				
+				crit4.getPoints().addAll(new Double[]{
+						0.0, starpoints/4,
+						starpoints*2/5,starpoints/4,
+						starpoints/2,0.0,
+						starpoints*3/5,starpoints/4,
+						starpoints,starpoints/4,
+						starpoints*3/4,starpoints/2,
+						starpoints,starpoints,
+						starpoints/2,starpoints*3/4,
+						0.0,starpoints,
+						starpoints/4,starpoints/2
+						});
+				crit4.setFill(Critter.population.get(i).viewColor());
+				crit4.setStroke(Color.BLACK);
+				Main.board.add(crit4, x, y);
 			}
+			
 		
         }
 	}

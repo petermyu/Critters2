@@ -67,7 +67,7 @@ public class Critter3 extends Critter{
 	@Override
 	public CritterShape viewShape() {
 		// TODO Auto-generated method stub
-		return CritterShape.SQUARE;
+		return CritterShape.DIAMOND;
 	}
 	public Color viewColor(){
 		return javafx.scene.paint.Color.VIOLET;
