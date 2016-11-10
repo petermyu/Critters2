@@ -1,5 +1,6 @@
 package assignment5;
 import assignment5.Critter.TestCritter;
+import javafx.scene.paint.Color;
 
 public class Algae extends TestCritter {
 
@@ -14,5 +15,9 @@ public class Algae extends TestCritter {
 	public CritterShape viewShape() {
 		// TODO Auto-generated method stub
 		return CritterShape.SQUARE;
+	}
+	@Override
+	public Color viewColor(){
+		return Color.DARKBLUE;
 	}
 }

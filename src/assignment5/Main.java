@@ -13,12 +13,13 @@
 package assignment5; // cannot be in default package
 import java.util.List;
 import java.util.Scanner;
-import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+
+import javax.swing.Timer;
 
 import com.sun.org.apache.xpath.internal.operations.Equals;
 import assignment5.Critter.CritterShape;
@@ -26,6 +27,7 @@ import assignment5.Critter.TestCritter;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.ScheduledService;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -57,6 +59,9 @@ import java.lang.reflect.InvocationTargetException;
  */
 public class Main extends Application{
 		public static GridPane board = new GridPane();
+		public static ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+		public static ScheduledFuture<?> handler;
+		public static Runnable beeper;
 		private static String myPackage;	// package of Critter file.  Critter cannot be in default pkg.
 		static {
 	        myPackage = Critter.class.getPackage().toString().split(" ")[1];
@@ -65,14 +70,9 @@ public class Main extends Application{
 			// TODO Auto-generated method stub
 			launch(args);
 		}
-		public HBox statsText(String str){
-			HBox hbox = new HBox();
-			Text text = new Text(str);
-			hbox.getChildren().add(text);
-			return hbox;
-		}
 	    @Override
 	    public void start(Stage primaryStage) {
+	    	Critter.displayWorld();
 	        primaryStage.setTitle("Critter2");
 	        Button btn = new Button();
 	        Button show = new Button();
@@ -89,6 +89,12 @@ public class Main extends Application{
 	        TextField critter = new TextField();
 	        TextField steps = new TextField();
 	        TextField numCrits = new TextField();
+	        critter.setMaxWidth(100);
+	        numCrits.setMaxWidth(100);
+	        btn.setMaxWidth(150);
+	        steps.setMaxWidth(150);
+	        show.setMaxWidth(150);
+	        stats.setMaxWidth(150);
 	        steps.setText("0");
 	        btn.setText("Make");
 	        show.setText("Show");
@@ -100,8 +106,10 @@ public class Main extends Application{
 	        timeStep.setText("Step");
 	        makeCrit.setText("Critter Name:");
 	        numCrit.setText("Number of Critters:");
+	        critter.setText("Critter1");
+	        steps.setText("1");
+	        numCrits.setText("1");
 	        timeStep.setOnAction(new EventHandler<ActionEvent>() {
-	        	 
 	            @Override
 	            public void handle(ActionEvent event) {
 	            	int i = 0;
@@ -123,49 +131,27 @@ public class Main extends Application{
 	            	show.setDisable(true);
 	            	seed.setDisable(true);
 	            	timeStep.setDisable(true);
-	            	Timer t = new Timer();
-	            	//Set the schedule function and rate
-	            	t.scheduleAtFixedRate(new TimerTask() {
-	            	    @Override
-	            	    public void run() {
-	            	        //Called each time when 1000 milliseconds (1 second) (the period parameter)
-	            	    	Critter.worldTimeStep();
-            	    	   Critter.displayWorld();
-            	    	   String input = critter.getText();
-       	        			try{
-	       		        		Class<?> crit = Class.forName(myPackage + "." + input);
-	       		    			Class<?>[] types = {List.class};
-	       		        		List<Critter> list = Critter.getInstances(input);
-	       						text.setText((String) crit.getMethod("runStats", types).invoke(null, list))	;
-       	        			}
-       	        			catch(InvalidCritterException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException | ClassNotFoundException e){
-       	        				text.setText("error");
-       	        			}
-	            	    }
-	            	},
-	            	//Set how long before to start calling the TimerTask (in milliseconds)
-	            	0,
-	            	//Set the amount of time between each execution (in milliseconds)
-	            	5000);
-	            	/*ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-	            	final Runnable animate = new Runnable() {
-	            	       public void run() { 
-	            	    	   Critter.worldTimeStep();
-	            	    	   Critter.displayWorld();
-	            	    	   String input = critter.getText();
-	       	        			try{
-		       		        		Class<?> crit = Class.forName(myPackage + "." + input);
-		       		    			Class<?>[] types = {List.class};
-		       		        		List<Critter> list = Critter.getInstances(input);
-		       						text.setText((String) crit.getMethod("runStats", types).invoke(null, list))	;
-	       	        			}
-	       	        			catch(InvalidCritterException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException | ClassNotFoundException e){
-	       	        				text.setText("error");
-	       	        			}
-	            	       }
-	            	     };
-	            	final ScheduledFuture<?> animateTimer = scheduler.scheduleAtFixedRate(animate, 5, 5, TimeUnit.SECONDS);*/
-	            	
+	            	scheduler = Executors.newScheduledThreadPool(1);
+	
+	        		    beeper = new Runnable() {
+	        		    	public void run() {
+	        		    		System.out.println("animate");
+	        		    		Critter.worldTimeStep();
+	        		    	//	Critter.displayWorld();
+	        		    		String input = critter.getText();
+	        	        		try{
+	        		        		Class<?> crit = Class.forName(myPackage + "." + input);
+	        		    			Class<?>[] types = {List.class};
+	        		        		List<Critter> list = Critter.getInstances(input);
+	        						text.setText((String) crit.getMethod("runStats", types).invoke(null, list))	;
+	        	        		}
+	        	        		catch(InvalidCritterException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException | ClassNotFoundException e){
+	        	        			text.setText("error");
+	        	        		}
+	        		    	}
+	        		     };
+	        		     handler = scheduler.scheduleAtFixedRate(beeper, 2,2, TimeUnit.SECONDS);
+	            
 	            }
 	        });
 	        stop.setOnAction(new EventHandler<ActionEvent>() {
@@ -176,6 +162,7 @@ public class Main extends Application{
 	            	show.setDisable(false);
 	            	seed.setDisable(false);
 	            	timeStep.setDisable(false);
+	            	scheduler.shutdown();
 	            }
 	        });
 	        btn.setOnAction(new EventHandler<ActionEvent>() {
@@ -228,7 +215,29 @@ public class Main extends Application{
 	        });
 	        
 	        BorderPane border = new BorderPane();
-	        Scene gridScene = new Scene(border, 600, 600);
+	        int window_height;
+	        int window_width;
+	        
+	        if(Params.world_height < 50){
+	        	window_height = 500;
+	        }
+	        else if(Params.world_height > 100){
+	        	window_height = 700;
+	        }
+	        else{
+	        	window_height = Params.world_height*20;
+	        }
+	        
+	        if(Params.world_width < 50){
+	        	window_width = 1000;
+	        }
+	        else if(Params.world_width > 100){
+	        	window_width = 700;
+	        }
+	        else{
+	        	window_width = Params.world_width*10;
+	        }
+	        Scene gridScene = new Scene(border, window_width,window_height);
 	        GridPane grid = new GridPane();
 	        border.setCenter(board);
 	        border.setRight(grid);
@@ -262,7 +271,6 @@ public class Main extends Application{
 	        grid.add(timeStep, 0, 7);
 	        grid.add(steps, 1, 7);
 	        grid.add(quit, 0, 8);
-	        
 	    	//primaryStage.setScene(s);
 	        primaryStage.setScene(gridScene);
 	        primaryStage.show();
