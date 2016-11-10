@@ -36,13 +36,13 @@ public class Critter1 extends Critter
 	}
 	
 	public boolean fight(String not_used) { // Critter1 will fight
-		return true; 
+		return false; 
 	}
 
 	@Override
 	public void doTimeStep() {
 		/* take one step forward */
-		look(2, false);
+		look(dir, false);
 		walk(dir);
 		dir += 3;
 		dir = dir%8;

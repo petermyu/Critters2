@@ -156,19 +156,12 @@ public class Main extends Application{
 	
 	        		    beeper = new Runnable() {
 	        		    	public void run() {
-	        		    		System.out.println("animate");
+	        		    		
 	        		    		Critter.worldTimeStep();
+	        		    		System.out.println("animate");
 	        		    		Critter.displayWorld();
 	        		    		String input = critter.getText();
-	        	        		try{
-	        		        		Class<?> crit = Class.forName(myPackage + "." + input);
-	        		    			Class<?>[] types = {List.class};
-	        		        		List<Critter> list = Critter.getInstances(input);
-	        						text.setText((String) crit.getMethod("runStats", types).invoke(null, list))	;
-	        	        		}
-	        	        		catch(InvalidCritterException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException | ClassNotFoundException e){
-	        	        			text.setText("error");
-	        	        		}
+	        	        		
 	        		    	}
 	        		     };
 	        		     handler = scheduler.scheduleAtFixedRate(beeper, 1,10, TimeUnit.SECONDS);

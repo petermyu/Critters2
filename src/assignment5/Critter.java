@@ -65,7 +65,7 @@ public abstract class Critter {
 	protected String look(int direction, boolean steps) {
 		int x = 0;
 		int y = 0;
-		if(steps = false){
+		if(steps == false){
 			switch(direction){
 			case 0: x = this.x_coord + 1;
 					y = this.y_coord;
@@ -92,18 +92,30 @@ public abstract class Critter {
 					y = this.y_coord - 1;
 					break;
 			}
-			for(int i = 0; i < population.size(); i++){
-				if(population.get(i).x_coord == x && population.get(i).y_coord == y){
-					population.get(i).energy = population.get(i).energy - Params.look_energy_cost;
+			if(x >= Params.world_width){
+				x = x - (Params.world_width);
+			}
+			if(x< 0){
+				x = x + (Params.world_width);
+			}
+			if(y >= Params.world_height){
+				y = y - (Params.world_height);
+			}
+			if(y < 0){
+				y = y + (Params.world_height);
+			}
+			for(int i = 0; i < newPopulation.size(); i++){
+				if(newPopulation.get(i).x_coord == x && newPopulation.get(i).y_coord == y){
+					newPopulation.get(i).energy = newPopulation.get(i).energy - Params.look_energy_cost;
 					return population.get(i).toString();
 				}
 				else{
-					population.get(i).energy = population.get(i).energy - Params.look_energy_cost;
+					newPopulation.get(i).energy = newPopulation.get(i).energy - Params.look_energy_cost;
 					return null;
 				}
 			}
 		}
-		else if(steps = true){
+		else if(steps == true){
 			switch(direction){
 			case 0: x = this.x_coord + 2;
 					y = this.y_coord;
@@ -130,13 +142,25 @@ public abstract class Critter {
 					y = this.y_coord - 2;
 					break;
 			}
-			for(int i = 0; i < population.size(); i++){
-				if(population.get(i).x_coord == x && population.get(i).y_coord == y){
-					population.get(i).energy = population.get(i).energy - Params.look_energy_cost;
-					return population.get(i).toString();
+			if(x >= Params.world_width){
+				x = x - (Params.world_width);
+			}
+			if(x< 0){
+				x = x + (Params.world_width);
+			}
+			if(y >= Params.world_height){
+				y = y - (Params.world_height);
+			}
+			if(y < 0){
+				y = y + (Params.world_height);
+			}
+			for(int i = 0; i < newPopulation.size(); i++){
+				if(newPopulation.get(i).x_coord == x && newPopulation.get(i).y_coord == y){
+					newPopulation.get(i).energy = newPopulation.get(i).energy - Params.look_energy_cost;
+					return newPopulation.get(i).toString();
 				}
 				else{
-					population.get(i).energy = population.get(i).energy - Params.look_energy_cost;
+					newPopulation.get(i).energy = newPopulation.get(i).energy - Params.look_energy_cost;
 					return null;
 				}
 			}
